@@ -18,13 +18,13 @@ const IconWidget = ({
     [`bg-${bgColor}`]: bgColor,
   });
   return (
-    <Card inverse className={classes} {...restProps}>
-      <CardBody className="cr-widget__icon">
+    <Card inverse className={classes} {...restProps} style={{ padding: '.5rem' }}>
+      <CardBody className="cr-widget__icon" style={{ padding: '1px 10px' }}>
         <Icon size={50} {...iconProps} />
       </CardBody>
-      <CardBody>
+      <CardBody style={{ padding: '1px' }}>
         <CardTitle>{title}</CardTitle>
-        <CardSubtitle>{subtitle}</CardSubtitle>
+        <CardSubtitle style={{ "fontSize": '12px' }}>{subtitle}</CardSubtitle>
       </CardBody>
     </Card>
   );

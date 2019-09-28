@@ -14,6 +14,7 @@ import './styles/reduction.scss';
 // const ButtonGroupPage = React.lazy(() => import('./pages/ButtonGroupPage'));
 // const ButtonPage = React.lazy(() => import('./pages/ButtonPage'));
 const CardPage = React.lazy(() => import('./pages/CardPage'));
+const PlaylistPage = React.lazy(() => import('./pages/PlaylistPage'));
 // const ChartPage = React.lazy(() => import('./pages/ChartPage'));
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
 // const DropdownPage = React.lazy(() => import('./pages/DropdownPage'));
@@ -33,8 +34,8 @@ class App extends React.Component {
   render() {
     return (
       <BrowserRouter basename={getBasename()}>
-        <GAListener>
           <Switch>
+            {/*Login component*/}
             <LayoutRoute
               exact
               path="/login"
@@ -43,6 +44,7 @@ class App extends React.Component {
                 <AuthPage {...props} authState={STATE_LOGIN} />
               )}
             />
+            {/*Sign Up component*/}
             <LayoutRoute
               exact
               path="/signup"
@@ -58,6 +60,7 @@ class App extends React.Component {
                 {/*<Route exact path="/login-modal" component={AuthModalPage} />*/}
                 {/*<Route exact path="/buttons" component={ButtonPage} />*/}
                 <Route exact path="/cards" component={CardPage} />
+                <Route exact path="/playlist" component={PlaylistPage} />
                 {/*<Route exact path="/widgets" component={WidgetPage} />*/}
                 {/*<Route exact path="/typography" component={TypographyPage} />*/}
                 {/*<Route exact path="/alerts" component={AlertPage} />*/}
@@ -74,7 +77,6 @@ class App extends React.Component {
             </MainLayout>
             <Redirect to="/" />
           </Switch>
-        </GAListener>
       </BrowserRouter>
     );
   }

@@ -81,10 +81,9 @@ const pageContents = [
 ];
 
 const navItems = [
-  { to: '/', name: 'dashboard', exact: true, Icon: MdDashboard },
-  { to: '/cards', name: 'cards', exact: false, Icon: MdWeb },
-  { to: '/charts', name: 'charts', exact: false, Icon: MdInsertChart },
-  { to: '/widgets', name: 'widgets', exact: false, Icon: MdWidgets },
+  { to: '/', name: 'home', exact: true, Icon: MdDashboard },
+  { to: '/playlist', name: 'playlist', exact: false, Icon: MdWeb },
+  { to: '/albums', name: 'albums', exact: false, Icon: MdWeb },
 ];
 
 const bem = bn.create('sidebar');
@@ -101,7 +100,7 @@ class Sidebar extends React.Component {
       const isOpen = prevState[`isOpen${name}`];
 
       return {
-        [`isOpen${name}`]: !isOpen,
+        [`isOpen${name}`]: true,
       };
     });
   };
