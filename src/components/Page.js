@@ -21,7 +21,7 @@ const Page = ({
 
   return (
     <Tag className={classes} {...restProps}>
-      <div className={bem.e('header')}>
+      {/*<div className={bem.e('header')}>
         {title && typeof title === 'string' ? (
           <Typography type="h1" className={bem.e('title')}>
             {title}
@@ -40,7 +40,7 @@ const Page = ({
               ))}
           </Breadcrumb>
         )}
-      </div>
+      </div>*/}
       {children}
     </Tag>
   );

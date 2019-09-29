@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Spinner } from 'reactstrap';
 
-const PageSpinner = ({ color = 'primary' }) => {
+const PageSpinner = ({ color = 'danger' }) => {
   return (
     <div className="cr-page-spinner">
       <Spinner color={color} />
