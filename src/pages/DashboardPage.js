@@ -45,8 +45,8 @@ class DashboardPage extends React.Component {
         title="Home"
         breadcrumbs={[{ name: 'Home', active: true }]}
       >
-        <Row>
-          <Col md="12" sm="12" xs="12">
+        <Row className="p-24 mr-ml-20 pb-2 center-hor">
+          <Col md="10" sm="11" xs="12">
             <Card>
               <CardHeader>Playlist</CardHeader>
               <CardBody>
@@ -81,9 +81,9 @@ class DashboardPage extends React.Component {
           </Col>
         </Row>
 
-        <Row>
+        <Row className="p-24 mr-ml-20 pb-2 center-hor">
           {/*<CardGroup style={{ marginBottom: '1rem' }}>*/}
-          <Col md="12" sm="12" xs="12">
+          <Col md="10" sm="11" xs="12">
           <Card>
             <CardHeader>Music folder</CardHeader>
             <CardBody>
@@ -113,8 +113,8 @@ class DashboardPage extends React.Component {
           </Col>
         </Row>
 
-        <Row style={ {justifyContent: "center"} }>
-          <Col md="11" sm="11" xs="12">
+        <Row className="p-24 mr-ml-20 pb-2 center-hor" style={ {justifyContent: "center"} }>
+          <Col md="10" sm="11" xs="12">
             <Card>
               <CardHeader>Frequent Music...</CardHeader>
               <CardBody>

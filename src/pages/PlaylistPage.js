@@ -10,7 +10,7 @@ const PlaylistPage = () => {
             breadcrumbs={[{ name: 'All playlist', active: true }]}>
 
             <Row>
-                <Col md="12" sm="12" xs="12">
+                <Col md="10" sm="11" xs="12">
                     <Row>
                         <Col md="4" sm="6" xs="12" className="mb-3">
                             <Card>

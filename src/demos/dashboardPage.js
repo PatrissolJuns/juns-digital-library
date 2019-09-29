@@ -19,6 +19,7 @@ import user11Image from './../assets/img/users/100_11.jpg';
 import user12Image from './../assets/img/users/100_12.jpg';
 import user13Image from './../assets/img/users/100_13.jpg';
 import user14Image from './../assets/img/users/100_14.jpg';
+import PropTypes from "../utils/propTypes";
 
 export const productsData = [
   {
@@ -358,3 +359,34 @@ export const chartjs = {
     },
   },
 };
+
+export const musicItemTable = [
+  {
+    avatar: user1Image,
+    track: 'intro',
+    artist: 'Maître Gims',
+    album: 'Centure noir',
+    duration: '3:48',
+  },
+  {
+    avatar: user1Image,
+    track: 'Fuegolando',
+    artist: 'Maître Gims',
+    album: 'Centure noir',
+    duration: '3:48',
+  },
+  {
+    avatar: user1Image,
+    track: 'Cameléon',
+    artist: 'Maître Gims',
+    album: 'Centure noir',
+    duration: '4:12',
+  },
+  {
+    avatar: user1Image,
+    track: 'Everytime',
+    artist: 'Maître Gims',
+    album: 'Centure noir',
+    duration: '3:02',
+  }
+]

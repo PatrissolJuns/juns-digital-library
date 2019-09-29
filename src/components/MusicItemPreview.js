@@ -40,7 +40,7 @@ const MusicItemPreview = ({ image, title, description, right, ...restProps }) =>
                         <TiTime className="mr-2"/> 3:15
                     </Media>
 
-                    {/*<Button outline color="secondary">
+                    {/*<Button outline color="secondary" size="sm">
                         Add to a playlist
                     </Button>*/}
                 </Media>

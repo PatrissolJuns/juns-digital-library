@@ -13,8 +13,10 @@ import './styles/reduction.scss';
 // const BadgePage = React.lazy(() => import('./pages/BadgePage'));
 // const ButtonGroupPage = React.lazy(() => import('./pages/ButtonGroupPage'));
 // const ButtonPage = React.lazy(() => import('./pages/ButtonPage'));
+const AddTrackPage = React.lazy(() => import('./pages/AddTrackPage'));
 const CardPage = React.lazy(() => import('./pages/CardPage'));
 const PlaylistPage = React.lazy(() => import('./pages/PlaylistPage'));
+const SingleAlbumPage = React.lazy(() => import('./pages/SingleAlbumPage'));
 // const ChartPage = React.lazy(() => import('./pages/ChartPage'));
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
 // const DropdownPage = React.lazy(() => import('./pages/DropdownPage'));
@@ -61,11 +63,13 @@ class App extends React.Component {
                 {/*<Route exact path="/buttons" component={ButtonPage} />*/}
                 <Route exact path="/cards" component={CardPage} />
                 <Route exact path="/playlist" component={PlaylistPage} />
+                <Route exact path="/single-album" component={SingleAlbumPage} />
                 {/*<Route exact path="/widgets" component={WidgetPage} />*/}
                 {/*<Route exact path="/typography" component={TypographyPage} />*/}
                 {/*<Route exact path="/alerts" component={AlertPage} />*/}
                 {/*<Route exact path="/tables" component={TablePage} />*/}
                 {/*<Route exact path="/badges" component={BadgePage} />*/}
+                <Route exact path="/add-track" component={AddTrackPage} />
                 {/*<Route exact path="/button-groups" component={ButtonGroupPage} />*/}
                 {/*<Route exact path="/dropdowns" component={DropdownPage} />*/}
                 {/*<Route exact path="/progress" component={ProgressPage} />*/}
