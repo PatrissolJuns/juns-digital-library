@@ -1,0 +1,34 @@
+{
+  "name": "jdl",
+  "version": "1.0.0",
+  "description": "This is an app to handle a cross digital library platform",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PatrissolJuns/juns-digital-librady.git"
+  },
+  "keywords": [
+    "react",
+    "digital",
+    "library"
+  ],
+  "author": "Patrissol Kenfack",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PatrissolJuns/juns-digital-librady/issues"
+  },
+  "homepage": "https://github.com/PatrissolJuns/juns-digital-librady#readme",
+  "dependencies": {
+    "atob": "^2.1.2",
+    "body-parser": "^1.19.0",
+    "btoa": "^1.2.1",
+    "buffer": "^5.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jsmediatags": "^3.9.2",
+    "morgan": "^1.9.1"
+  }
+}
