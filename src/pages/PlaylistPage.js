@@ -1,6 +1,6 @@
 import Page from './../components/Page';
 import React from 'react';
-import {Card, CardBody, CardHeader, CardImg, CardText, CardTitle, Col, Row} from 'reactstrap';
+import {Card, CardBody, CardImg, CardText, CardTitle, Col, Row} from 'reactstrap';
 import bg11Image from "../assets/img/bg/background_1920-11.jpg";
 
 const PlaylistPage = () => {
@@ -9,8 +9,8 @@ const PlaylistPage = () => {
             title="All playlist"
             breadcrumbs={[{ name: 'All playlist', active: true }]}>
 
-            <Row>
-                <Col md="10" sm="11" xs="12">
+            <Row className="display-page-row">
+                <Col md="11" sm="12" xs="12">
                     <Row>
                         <Col md="4" sm="6" xs="12" className="mb-3">
                             <Card>

@@ -118,27 +118,28 @@ class Header extends React.Component {
             </Popover>
           </NavItem>
 
+
           <NavItem>
             <NavLink id="Popover2">
               <Avatar
-                onClick={this.toggleUserCardPopover}
-                className="can-click"
+                  onClick={this.toggleUserCardPopover}
+                  className="can-click"
               />
             </NavLink>
             <Popover
-              placement="bottom-end"
-              isOpen={this.state.isOpenUserCardPopover}
-              toggle={this.toggleUserCardPopover}
-              target="Popover2"
-              className="p-0 border-0"
-              style={{ minWidth: 250 }}
+                placement="bottom-end"
+                isOpen={this.state.isOpenUserCardPopover}
+                toggle={this.toggleUserCardPopover}
+                target="Popover2"
+                className="p-0 border-0"
+                style={{ minWidth: 250 }}
             >
               <PopoverBody className="p-0 border-light">
                 <UserCard
-                  title="Jane"
-                  subtitle="jane@jane.com"
-                  text="Last updated 3 mins ago"
-                  className="border-light"
+                    title="Jane"
+                    subtitle="jane@jane.com"
+                    text="Last updated 3 mins ago"
+                    className="border-light"
                 >
                   <ListGroup flush>
                     <ListGroupItem tag="button" action className="border-light">
@@ -164,6 +165,7 @@ class Header extends React.Component {
               </PopoverBody>
             </Popover>
           </NavItem>
+
         </Nav>
       </Navbar>
     );

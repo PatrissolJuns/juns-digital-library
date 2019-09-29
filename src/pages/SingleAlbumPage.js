@@ -1,14 +1,11 @@
 import Page from './../components/Page';
 import React from 'react';
-import {Button, Card, CardBody, CardHeader, CardImg, CardText, CardTitle, CardSubtitle, Col, Media, Row} from 'reactstrap';
-import bg11Image from "../assets/img/bg/background_1920-11.jpg";
+import {Button, Card, CardBody, CardImg, CardText, CardTitle, CardSubtitle, Col, Media, Row} from 'reactstrap';
 import bg1Image from "../assets/img/bg/background_640-1.jpg";
 import {musicItemTable} from "../demos/dashboardPage";
 import MusicItemTable from "../components/MusicItemTable";
 import { MdPersonPin } from 'react-icons/md';
 import { TiTime } from 'react-icons/ti';
-
-console.log("musicItemTable = ",musicItemTable);
 
 const SingleAlbumPage = () => {
     return (
@@ -16,8 +13,8 @@ const SingleAlbumPage = () => {
             title="All playlist"
             breadcrumbs={[{ name: 'All playlist', active: true }]}>
 
-            <Row className="p-24 mr-ml-20 center-hor">
-                <Col md="10" sm="11" xs="12">
+            <Row className="display-page-row">
+                <Col md="11" sm="11" xs="11">
                     <Row className="mb-12">
                         <Col md="12" sm="12" xs="12" className="p-0">
                         <Card className="flex-row no-border no-bg-color">

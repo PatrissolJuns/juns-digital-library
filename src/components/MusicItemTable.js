@@ -5,13 +5,7 @@ import {Table, Progress, Button} from 'reactstrap';
 
 import Avatar from './../components/Avatar';
 
-import withBadge from './../hocs/withBadge';
 import { IoMdHeart } from 'react-icons/io';
-
-const AvatarWithBadge = withBadge({
-  position: 'bottom-right',
-  color: 'success',
-})(Avatar);
 
 const MusicItemTable = ({ headers, musicData, ...restProps }) => {
   return (

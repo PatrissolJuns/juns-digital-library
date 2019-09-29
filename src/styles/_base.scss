@@ -93,3 +93,18 @@ button,
   display: flex;
   align-items: center;
 }
+
+.display-page-row {
+  //padding: 24px;
+  padding-top: 24px;
+  //margin-left: 20px;
+  //margin-right: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+@media screen and (max-width: 600px) {
+  .display-page-row {
+    //padding: 24px;
+  }
+}

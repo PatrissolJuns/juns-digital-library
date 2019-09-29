@@ -1,7 +1,6 @@
 import Page from './../components/Page';
 import React from 'react';
-import {Button, Card, CardBody, CardHeader, CardImg, CardText, CardTitle, Col, Form, Input, Row} from 'reactstrap';
-import bg11Image from "../assets/img/bg/background_1920-11.jpg";
+import {Button, Card, CardBody,CardText, CardTitle, Col, Form, Input, Row} from 'reactstrap';
 import { MdCloudUpload } from 'react-icons/md';
 
 const AddTrackPage = () => {
