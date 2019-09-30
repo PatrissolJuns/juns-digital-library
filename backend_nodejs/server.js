@@ -66,7 +66,7 @@ router.get('/getData', (req, res) => {
     jsmediatags.read("./longue.mp3", {
         onSuccess: function(tag) {
             console.log(tag);
-            console.log(tag.tags.TXXX);
+            console.log(tag.tags.picture);
             // console.log(tag.tags.picture.data);
             // console.log(tag.tags.APIC);
             let image =tag.tags.picture; let base64String = "";
@@ -113,10 +113,12 @@ let r = (l = 7) => Math.random().toString(36).substr(2, l);
 router.post('/add', (req, res) => {
     const { name } = req.body;
     console.log("name = ", name);
-    return res.json({
+    let newPlalist = {
         id: globalState.reduce((maxId, todo) => Math.max(todo.id, maxId), -1) + 1,
         name: name
-    })
+    };
+    globalState = [...globalState, newPlalist];
+    return res.json(newPlalist);
 });
 
 
