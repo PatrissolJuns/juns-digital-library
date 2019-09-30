@@ -6,6 +6,7 @@ import React from 'react';
 import componentQueries from 'react-component-queries';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import './styles/reduction.scss';
+import PlaylistsContainer from "./containers/PlaylistsContainer";
 
 const AddTrackPage = React.lazy(() => import('./pages/AddTrackPage'));
 const PlaylistPage = React.lazy(() => import('./pages/PlaylistPage'));
@@ -18,6 +19,7 @@ const getBasename = () => {
 
 class App extends React.Component {
   render() {
+
     return (
       <BrowserRouter basename={getBasename()}>
           <Switch>
@@ -43,7 +45,7 @@ class App extends React.Component {
             <MainLayout breakpoint={this.props.breakpoint}>
               <React.Suspense fallback={<PageSpinner />}>
                 <Route exact path="/" component={DashboardPage} />
-                <Route exact path="/playlist" component={PlaylistPage} />
+                <Route exact path="/playlist" component={PlaylistsContainer} />
                 <Route exact path="/single-album" component={SingleAlbumPage} />
                 <Route exact path="/add-track" component={AddTrackPage} />
               </React.Suspense>

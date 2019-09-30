@@ -44,6 +44,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger('dev'));
 
+let globalState = [
+    { id: 1, name: "Dashgum - Admin Panel Theme"},
+    { id: 2, name: "Extensive collection of plugins"},
+    { id: 3, name: "Free updates always, no extra fees."},
+    { id: 4, name: "More features coming soon"}
+];
+
+
+router.get('/getPlaylists', (req, res) => {
+    return res.json(globalState);
+});
+
 // this is our get method
 // this method fetches all available data in our database
 router.get('/getData', (req, res) => {
@@ -78,8 +90,6 @@ router.get('/getData', (req, res) => {
             console.log(':(', error.type, error.info);
         }
     });
-    res.set('content-type', 'audio/mp3');
-    res.set('accept-ranges', 'bytes');
 });
 
 router.get('/music', (req, res) => {
@@ -97,6 +107,19 @@ router.post('/updateData', (req, res) => {
         return res.json({ success: true });
     });
 });
+
+let r = (l = 7) => Math.random().toString(36).substr(2, l);
+
+router.post('/add', (req, res) => {
+    const { name } = req.body;
+    console.log("name = ", name);
+    return res.json({
+        id: globalState.reduce((maxId, todo) => Math.max(todo.id, maxId), -1) + 1,
+        name: name
+    })
+});
+
+
 
 // this is our delete method
 // this method removes existing data in our database

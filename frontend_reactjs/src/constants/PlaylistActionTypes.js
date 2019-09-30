@@ -1,0 +1,4 @@
+export const ADD_PLAYLIST = 'ADD_PLAYLIST';
+export const EDIT_PLAYLIST = 'EDIT_PLAYLIST';
+export const DELETE_PLAYLIST = 'DELETE_PLAYLIST';
+export const FETCH_PLAYLIST = 'FETCH_PLAYLIST';
