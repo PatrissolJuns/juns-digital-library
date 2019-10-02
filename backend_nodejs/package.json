@@ -12,8 +12,10 @@
   },
   "keywords": [
     "react",
-    "digital",
-    "library"
+    "audio",
+    "cloud",
+    "digital library",
+    "digital library audio",
   ],
   "author": "Patrissol Kenfack",
   "license": "MIT",
@@ -27,8 +29,12 @@
     "btoa": "^1.2.1",
     "buffer": "^5.4.3",
     "cors": "^2.8.5",
+    "dotenv": "^8.1.0",
     "express": "^4.17.1",
+    "get-audio-duration": "^1.0.0",
     "jsmediatags": "^3.9.2",
-    "morgan": "^1.9.1"
+    "mongoose": "^5.7.1",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.2"
   }
 }
