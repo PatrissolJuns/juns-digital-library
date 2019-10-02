@@ -1,11 +1,11 @@
 import * as types from '../constants/PlaylistActionTypes'
 import axios from 'axios';
 
-const apiUrl = "http://localhost:3001/api";
+const apiUrl = "http://localhost:3001/api/playlist";
 
-export const fetchAllPlaylists = () => {
+export const fetchAllPlaylistsDB = () => {
     return (dispatch) => {
-        return axios.get(apiUrl + "/getPlaylists")
+        return axios.get(apiUrl + "/")
                     .then(response => {
                         dispatch(fetchPlaylists(response.data))
                     })
@@ -15,16 +15,16 @@ export const fetchAllPlaylists = () => {
     };
 };
 
-export const createPlaylist = (name) => {
+export const createPlaylistDB = (name) => {
     return (dispatch) => {
-        return axios.post(`${apiUrl}/add`, {name})
-                .then(response => {
-                    console.log("response.data = ",response.data);
-                    dispatch(addPlaylist(response.data))
-                })
-                .catch(error => {
-                    throw(error);
-                });
+        return axios.post(`${apiUrl}/create`, {name})
+                    .then(response => {
+                        console.log("response.data = ",response.data);
+                        dispatch(addPlaylist(response.data))
+                    })
+                    .catch(error => {
+                        throw(error);
+                    });
     };
 };
 

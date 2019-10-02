@@ -19,6 +19,7 @@ const playlist = (state = [], action) => {
         case types.DELETE_PLAYLIST:
             return state.filter(_playlist => action.playlist.id !== _playlist.id);
         case types.FETCH_PLAYLIST:
+            console.log("action = ",action);
             return action.playlists;
         default:
             return state

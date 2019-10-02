@@ -12,7 +12,7 @@ const { getAudioDurationInSeconds } = require('get-audio-duration');
  * @returns {Promise<Object>}
  */
 getAudioInformation = (audio) => {
-    let data = {}; let tag = null; let cover = 'default.png'; let duration = null;
+    let data = {}; let tag = null; let cover = 'default_audio.jpg'; let duration = null;
     return new Promise((resolve, reject) => {
         jsmediatags.read(audio, {
             onSuccess: function(_tag) {

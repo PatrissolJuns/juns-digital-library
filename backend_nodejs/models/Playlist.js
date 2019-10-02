@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const PlaylistSchema = new mongoose.Schema({
     name: String,
     audioList: [String]
-});
+}, { versionKey: false });
 
 mongoose.model('Playlist', PlaylistSchema);
 

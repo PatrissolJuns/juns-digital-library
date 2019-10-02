@@ -38,9 +38,7 @@ exports.createPlaylist = (req, res, next) => {
     playlist.save().then(
         (playlist) => {
             console.log("playlist = ",playlist);
-            res.status(201).json({
-                message: req.body.name
-            });
+            res.status(201).json(playlist);
         }
     ).catch(
         (error) => {

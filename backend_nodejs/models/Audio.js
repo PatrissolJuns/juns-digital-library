@@ -11,7 +11,7 @@ const AudioSchema = new mongoose.Schema({
     size: Number,
     track: String,
     year: String
-});
+}, { versionKey: false });
 
 mongoose.model('Audio', AudioSchema);
 

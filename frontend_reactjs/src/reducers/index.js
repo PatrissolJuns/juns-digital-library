@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux'
 
-import playlist from './playlist'
+import playlists from './playlist'
 
 const rootReducer = combineReducers({
-    playlist
+    playlists
 });
 
 export default rootReducer

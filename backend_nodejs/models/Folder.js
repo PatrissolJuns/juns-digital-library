@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const FolderSchema = new mongoose.Schema({
     name: String,
     parentFolder: [String]
-});
+}, { versionKey: false });
 
 mongoose.model('Folder', FolderSchema);
 
