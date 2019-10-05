@@ -85,7 +85,7 @@ export default PlaylistPage;
 /*const [dat, setDat] = useState('');
 const [audioList, setAudioList] = useState([]);
 function getDataFromDb () {
-    fetch('http://localhost:3001/api/getData')
+    fetch('http://localhost:5200/api/getData')
         .then((data) => data.json())
         .then((res) => {
             console.log("res[0] = ",res[0]);

@@ -207,7 +207,7 @@ router.get('/getData', (req, res) => {
                 name: tag.tags.title,
                 singer: tag.tags.artist,
                 cover: base64,
-                musicSrc: "http://localhost:3001/api/music"
+                musicSrc: "http://localhost:5200/api/music"
             }]);
 
         },

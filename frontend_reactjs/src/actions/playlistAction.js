@@ -2,7 +2,7 @@ import * as types from '../constants/PlaylistActionTypes'
 import axios from 'axios';
 import {toast} from "react-toastify";
 
-const apiUrl = "http://localhost:3001/api/playlist";
+const apiUrl = "http://localhost:5200/api/playlist";
 
 export const fetchAllPlaylistsDB = () => {
     return (dispatch) => {
@@ -29,9 +29,9 @@ export const createPlaylistDB = (name) => {
     };
 };
 
-export const updatePlaylistDB = (_id, name, audioLists) => {
+export const updatePlaylistDB = (_id, name, audioList, isAdd = true) => {
     return (dispatch) => {
-        return axios.put(`${apiUrl}/update/${_id}`, {name, audioLists})
+        return axios.put(`${apiUrl}/update/${_id}`, {name, audioList, isAdd})
             .then(response => {
                 console.log("response.data = ",response.data);
                 if(response.status === 200) {

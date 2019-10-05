@@ -6,6 +6,7 @@ import DisplayPlaylist from './../pages/DisplayPlaylist';
 import getOnePlaylist from './../selectors/playlist';
 
 const mapStateToProps = (state, props) => ({
+    audios: state.audios,
     playlists: getOnePlaylist(state, props)
 });
 

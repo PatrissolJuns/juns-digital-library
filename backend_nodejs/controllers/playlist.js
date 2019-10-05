@@ -51,22 +51,57 @@ exports.createPlaylist = (req, res, next) => {
 
 exports.updatePlaylist = (req, res, next) => {
     console.log("id = ",req.params.id);
-    const playlist = new Playlist({
-        _id: req.params.id,
-        name: req.body.name,
-        audioList: req.body.audioList
-    });
-    Playlist.updateOne({_id: req.params.id}, playlist).then(
-        () => {
-            res.status(200).json(playlist);
+
+    let oldPlaylist = null;
+    Playlist.findOne({
+        _id: req.params.id
+    }).then(
+        (_playlist) => {
+            // const set1 = new Set([1, 2, 3, 4, 5]);
+
+            // console.log("set1 = ",set1.has(1));
+            // expected output: true
+
+
+            /*oldPlaylist = _playlist;
+            console.log("_playlist = ",oldPlaylist);
+            let fusion = oldPlaylist.audioList.slice().concat(req.body.audioList);
+            console.log("fusion = ",fusion);*/
+            // first merge the two items of audioList in order to not loose old data
+            let newAudioList = [];
+            if(req.body.isAdd)
+                newAudioList = [...new Set(_playlist.audioList.slice().concat(req.body.audioList))];
+            else newAudioList = _playlist.audioList.filter(audio => !req.body.audioList.includes(audio));
+            // let arr = [oldPlaylist.audioList, req.body.audioList];
+            // let newTab = [...new Set([].concat(...arr))];
+
+            console.log("newAudioList = ", newAudioList);
+
+            const playlist = new Playlist({
+                _id: req.params.id,
+                name: req.body.name,
+                audioList: newAudioList
+            });
+            Playlist.updateOne({_id: req.params.id}, playlist).then(
+                () => {
+                    res.status(200).json(playlist);
+                }
+            ).catch(
+                (error) => {
+                    res.status(400).json({
+                        error: error
+                    });
+                }
+            );
         }
     ).catch(
         (error) => {
-            res.status(400).json({
+            res.status(404).json({
                 error: error
             });
         }
     );
+
 };
 
 exports.deletePlaylist = (req, res, next) => {

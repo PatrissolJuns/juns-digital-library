@@ -9,8 +9,8 @@ import "react-jinke-music-player/assets/index.css";
 
 
 const getUrlAction = (oldImage, type) => {
-    if(type === "audio") return "http://localhost:3001/file/audios/" + oldImage;
-    else if (type === "image") return "http://localhost:3001/file/images/" + oldImage;
+    if(type === "audio") return "http://localhost:5200/file/audios/" + oldImage;
+    else if (type === "image") return "http://localhost:5200/file/images/" + oldImage;
     else return "";
 }
 

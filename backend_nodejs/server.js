@@ -54,4 +54,4 @@ router.use('/playlist', playlistRoutes);
 app.use('/api', router);
 
 // launch our backend into a port
-app.listen(process.env.PORT || 5000, () => console.log(`LISTENING ON PORT ${process.env.PORT}`));
+app.listen(process.env.PORT || 5201, () => console.log(`LISTENING ON PORT ${process.env.PORT}`));

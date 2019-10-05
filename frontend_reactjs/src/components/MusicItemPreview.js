@@ -13,20 +13,11 @@ import PlayButton from "./PlayButton";
 
 import MusicPlayer from './MusicPlayer';
 import PlayButtonContainer from "../containers/PlayButtonContainer";
-
-const getUrlAction = (oldImage, type) => {
-    if(type === "audio") return "http://localhost:3001/file/audios/" + oldImage;
-    else if (type === "image") return "http://localhost:3001/file/images/" + oldImage;
-    else return "";
-}
-
-const getDurationFormat = (duration) => {
-    return parseInt(duration / 60, 10) + ":" + parseInt(duration % 60);
-}
+import {getUrlAction, getDurationFormat} from './../utils/builtInFunction';
 
 const MusicItemPreview = ({ audio, audios, ...restProps }) => {
 
-    // image={"http://localhost:3001/file/images/" + audio.cover}
+    // image={"http://localhost:5200/file/images/" + audio.cover}
     let album = audio.album;
     let artist = audio.artist;
     let belongToPlaylist = audio.artist;

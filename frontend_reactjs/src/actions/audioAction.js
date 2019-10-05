@@ -1,7 +1,7 @@
 import * as types from '../constants/AudioActionTypes'
 import axios from 'axios';
 
-const apiUrl = "http://localhost:3001/api/audio";
+const apiUrl = "http://localhost:5200/api/audio";
 
 export const fetchAllAudioDB = () => {
     return (dispatch) => {
@@ -36,7 +36,7 @@ export const createAudioDB = (data) => {
         console.log("passage create dans l'action" ,data);
         return axios.post(`${apiUrl}/create`, data, config)
                     .then(response => {
-                        console.log("response.data = ",response.data);
+                        // console.log("response.data = ",response.data);
                         // dispatch(addAudio(response.data))
                         dispatch(fetchAllAudioDB());
                     })

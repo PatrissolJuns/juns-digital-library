@@ -1,6 +1,19 @@
 import Page from './../components/Page';
-import React from 'react';
-import {Button, Card, CardBody, CardImg, CardText, CardTitle, CardSubtitle, Col, Media, Row} from 'reactstrap';
+import React, { useState } from 'react';
+import {
+    Button,
+    Card,
+    CardBody,
+    CardImg,
+    CardText,
+    CardTitle,
+    CardSubtitle,
+    Col,
+    Media,
+    Row,
+    Modal,
+    ModalHeader, ModalBody, InputGroup, InputGroupAddon, Input, Label, FormGroup
+} from 'reactstrap';
 import bg1Image from "../assets/img/bg/background_640-1.jpg";
 import {musicItemTable} from "../demos/dashboardPage";
 import MusicItemTable from "../components/MusicItemTable";
@@ -8,9 +21,42 @@ import { MdPersonPin } from 'react-icons/md';
 import { TiTime } from 'react-icons/ti';
 
 const DisplayPlaylist = (props) => {
-    console.log("props = ", props);
-    const playlist = props.playlists[0];
-    console.log("playlist = ", playlist);
+    const [isModalOpenAdd, setIsModalOpenAdd] = useState(false);
+    const [isModalOpenRemove, setIsModalOpenRemove] = useState(false);
+
+    const playlist = props.playlists;
+
+    const toggle = (action) => {
+        switch (action) {
+            case "ADD":
+                setIsModalOpenAdd(!isModalOpenAdd);
+                break;
+            case "REMOVE":
+                setIsModalOpenRemove(!isModalOpenRemove);
+                break;
+        }
+
+    }
+    const handleSubmit = (event, action) => {
+        event.preventDefault();
+        switch (action) {
+            case "ADD":
+                let dataToBeAdd = Object.values(event.target.audioSelectedAdd).filter(input => input.checked === true).map(input => input.value);
+                props.actions.updatePlaylistDB(playlist._id, playlist.name, dataToBeAdd);
+                toggle("ADD");
+                break;
+            case "REMOVE":
+                let dataToBeRemove = Object.values(event.target.audioSelectedRemove).filter(input => input.checked === true).map(input => input.value);
+                props.actions.updatePlaylistDB(playlist._id, playlist.name, dataToBeRemove, false);
+                toggle("REMOVE");
+                break;
+        }
+
+    }
+
+    if(playlist === undefined || playlist.audioList.some(item => item === undefined)) {
+        return null;
+    }
     return (
         <Page
             title="All playlist"
@@ -48,14 +94,60 @@ const DisplayPlaylist = (props) => {
                     <Row className="mb-12">
                         <Media>
                             <Button className="mr-12" color="primary" size="sm">
-                                Ecouter
+                                Listen
                             </Button>
-                            <Button outline className="mr-12" color="primary" size="sm">
-                                Ajouter à la playlist
+                            <Button
+                                onClick={() => toggle("ADD")}
+                                outline className="mr-12" color="primary" size="sm">
+                                Add new music
                             </Button>
-                            <Button outline className="mr-12" color="primary" size="sm">
-                                Ajouter aux favoris
+                            <Button
+                                onClick={() => toggle("REMOVE")}
+                                outline className="mr-12" color="danger" size="sm">
+                                Remove music
                             </Button>
+                            <Modal
+                                isOpen={isModalOpenAdd}
+                                toggle={() => toggle("ADD")}
+                                className={props.className + " modal-dialog-centered"}>
+                                <ModalHeader toggle={() => toggle("ADD")}>Add a music to playlist</ModalHeader>
+                                <ModalBody>
+                                    <form
+                                        onSubmit={(event) => handleSubmit(event, "ADD")}
+                                    >
+                                        {props.audios.map(audio => (
+                                            <FormGroup check>
+                                                <Label check>
+                                                    <Input value={audio._id} type="checkbox" name="audioSelectedAdd"/> {audio.track}
+                                                </Label>
+                                            </FormGroup>
+                                        ))}
+                                        <Button type="submit" color="primary">Submit</Button>
+                                    </form>
+                                </ModalBody>
+                            </Modal>
+
+                            <Modal
+                                isOpen={isModalOpenRemove}
+                                toggle={() => toggle("REMOVE")}
+                                className={props.className + " modal-dialog-centered"}>
+                                <ModalHeader toggle={() => toggle("REMOVE")}>Remove a music to the playlist</ModalHeader>
+                                <ModalBody>
+                                    <form
+                                        onSubmit={(event) => handleSubmit(event, "REMOVE")}
+                                    >
+                                        {playlist.audioList.map(audio => (
+                                            <FormGroup check>
+                                                <Label check>
+                                                    <Input value={audio._id} type="checkbox" name="audioSelectedRemove"/> {audio.track}
+                                                </Label>
+                                            </FormGroup>
+                                        ))}
+                                        <Button type="submit" color="primary">Remove</Button>
+                                    </form>
+                                </ModalBody>
+                            </Modal>
+
                         </Media>
                         <Media right>
 
@@ -71,7 +163,7 @@ const DisplayPlaylist = (props) => {
                                 <TiTime size={25}/>,
                                 ''
                             ]}
-                            musicData={musicItemTable}
+                            musicData={playlist.audioList}
                         />
                     </Row>
                 </Col>

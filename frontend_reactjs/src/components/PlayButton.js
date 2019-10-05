@@ -3,12 +3,8 @@ import {Button, Media} from "reactstrap";
 import { IoIosPlayCircle, IoIosPause } from 'react-icons/io';
 import MusicPlayer from "./MusicPlayer";
 import PropTypes from "../utils/propTypes";
+import {getUrlAction, getDurationFormat} from './../utils/builtInFunction';
 
-const getUrlAction = (oldImage, type) => {
-    if(type === "audio") return "http://localhost:3001/file/audios/" + oldImage;
-    else if (type === "image") return "http://localhost:3001/file/images/" + oldImage;
-    else return "";
-}
 
 const PlayButton = ({audio, ...props}) => {
     const [isPlay, setIsPlay] = useState(false);
