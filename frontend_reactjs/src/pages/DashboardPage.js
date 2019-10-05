@@ -110,6 +110,7 @@ const DashboardPage = ({...props}) => {
                                       key={audio._id}
                                       audio={audio}
                                       audios={props.audios}
+                                      actions={props.actions}
                                   />
                             ),
                         )}

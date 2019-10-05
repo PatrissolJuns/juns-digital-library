@@ -7,8 +7,8 @@ const AudioController = require('../controllers/audio');
 router.get('/', AudioController.getAllAudio);
 router.get('/:id', AudioController.getOneAudio);
 router.post('/create', audioMulter, AudioController.createAudio);
-router.put('/update', AudioController.updateAudio);
-router.delete('/delete', AudioController.deleteAudio);
+router.put('/rename/:id', AudioController.renameAudio);
+router.delete('/delete/:id', AudioController.deleteAudio);
 
 
 module.exports = router;

@@ -57,25 +57,11 @@ exports.updatePlaylist = (req, res, next) => {
         _id: req.params.id
     }).then(
         (_playlist) => {
-            // const set1 = new Set([1, 2, 3, 4, 5]);
-
-            // console.log("set1 = ",set1.has(1));
-            // expected output: true
-
-
-            /*oldPlaylist = _playlist;
-            console.log("_playlist = ",oldPlaylist);
-            let fusion = oldPlaylist.audioList.slice().concat(req.body.audioList);
-            console.log("fusion = ",fusion);*/
-            // first merge the two items of audioList in order to not loose old data
+            console.log("_playlist_playlist = ",_playlist);
             let newAudioList = [];
             if(req.body.isAdd)
                 newAudioList = [...new Set(_playlist.audioList.slice().concat(req.body.audioList))];
             else newAudioList = _playlist.audioList.filter(audio => !req.body.audioList.includes(audio));
-            // let arr = [oldPlaylist.audioList, req.body.audioList];
-            // let newTab = [...new Set([].concat(...arr))];
-
-            console.log("newAudioList = ", newAudioList);
 
             const playlist = new Playlist({
                 _id: req.params.id,
@@ -131,10 +117,65 @@ exports.de = (req, res, next) => {
     });
 };
 
+exports.getFromDBOnePlaylist = (_id) => {
+    return Playlist.findOne({
+        _id: _id
+    }).then( (playlist) => playlist)
+    .catch(
+        (error) => {
+            return null;
+        }
+    );
+}
+
+exports.updateFromDBOnePlaylist = async (_id, newName, _newAudioList, isAdd) => {
+    let _playlist = await this.getFromDBOnePlaylist(_id);
+    if(_playlist !== null) {
+        let newAudioList = [];
+        if(isAdd)
+            newAudioList = [...new Set(_playlist.audioList.slice().concat(_newAudioList))];
+        else newAudioList = _playlist.audioList.filter(audio => !_newAudioList.includes(audio));
+
+        const playlist = new Playlist({
+            _id: _id,
+            name: newName,
+            audioList: newAudioList
+        });
+        return Playlist.updateOne({_id: _id}, playlist).then(
+            () => {
+                // res.status(200).json(playlist);
+                return true;
+            }
+        ).catch(
+            (error) => {
+                return false;
+            }
+        );
+    }
+
+}
+/*let PlaylistJuns = {};
+const t = async () => {
+    PlaylistJuns = await this.getFromDBOnePlaylist("5d951e1bf5d45107c3be9e8d");
+    console.log('PlaylistJuns = ',PlaylistJuns);
+
+    let response = null;
+    const r = async () =>{
+        console.log('debut ');
+        response = await this.updateFromDBOnePlaylist(
+            PlaylistJuns._id, PlaylistJuns.name, ["5d959e072351295af4757fb7"], false
+        );
+        console.log('response = ',response);
+    }
+    r();
+}
+t();*/
 
 
-
-
+/*let response = this.updateFromDBOnePlaylist(
+    PlaylistJuns._id, PlaylistJuns.name, [audioId], false
+);
+console.log("response = ",response);*/
 
 
 

@@ -17,18 +17,17 @@ const audio = (state = [], action) => {
                     track: action.track,
                     year: action.year,
                 }];
-        case types.EDIT_AUDIO:
+        case types.RENAME_AUDIO:
             // console.log("action.name = ",action.name);
             return state.map((_audio) => {
-                        if (_audio._id === action.audio._id) {
-                            return Object.assign({}, action.playlist,{track: action.track})
+                        if (_audio._id === action._id) {
+                            return Object.assign({}, _audio,{track: action.track})
                         }
                         else return _audio;
                     });
         case types.DELETE_AUDIO:
-            return state.filter(_audio => action.audio.id !== _audio.id);
+            return state.filter(_audio => action._id !== _audio._id);
         case types.FETCH_AUDIO:
-            // console.log("action = ",action);
             return action.audios;
         default:
             return state

@@ -1,6 +1,7 @@
 // in controllers/audio.js
 const jsmediatags  = require("jsmediatags");
 const Audio = require('../models/Audio');
+const PlaylistController = require('../controllers/playlist');
 const btoa = require('btoa');
 const fs = require('fs');
 const { getAudioDurationInSeconds } = require('get-audio-duration');
@@ -130,30 +131,64 @@ exports.getOneAudio = (req, res, next) => {
     );
 };
 
-exports.updateAudio = (req, res, next) => {
-    const audio = new Audio({
-        _id: req.params.id,
-        name: req.body.name,
-        audioList: req.body.audioList
-    });
-    Audio.updateOne({_id: req.params.id}, audio).then(
-        () => {
-            res.status(201).json({
-                message: 'audio updated successfully!'
-            });
+exports.renameAudio = (req, res, next) => {
+    Audio.findOne({
+        _id: req.params.id
+    }).then(
+        (_audio) => {
+            /*const audio = new Audio({
+                _id: req.params.id,
+                ..._audio,
+                name: req.body.name,
+            });*/
+            let t = JSON.parse(JSON.stringify(_audio));
+            t.track = req.body.track;
+
+            Audio.updateOne({_id: req.params.id}, t).then(
+                () => {
+                    res.status(201).json({
+                        message: 'audio updated successfully!'
+                    });
+                }
+            ).catch(
+                (error) => {
+                    res.status(400).json({
+                        error: error
+                    });
+                }
+            );
         }
     ).catch(
         (error) => {
-            res.status(400).json({
+            res.status(404).json({
                 error: error
             });
         }
     );
 };
 
-exports.deleteAudio = (req, res, next) => {
+exports.deleteAudio = async (req, res, next) => {
+    // let audio = {};
+    // getFromDBOneAudio(req.params.id).then((_audio => audio = _audio));
+
+    let audio = await this.getFromDBOneAudio(req.params.id);
+    let audioId = audio._id;
+    let playlists = audio.belongToPlaylist;
+
+    console.log("audioqsdqsdqsdqsdqs = ",audio);
     Audio.deleteOne({_id: req.params.id}).then(
         () => {
+            playlists.map(async item => {
+                let Playlist = await PlaylistController.getFromDBOnePlaylist(item);
+                let response = await PlaylistController.updateFromDBOnePlaylist(
+                    Playlist._id, Playlist.name, [audioId], false
+                );
+                if(!response) {
+                    res.status(500).json({
+                        error: "something went wrong"
+                    });
+                }
+            });
             res.status(200).json({
                 message: 'Deleted!'
             });
@@ -165,7 +200,27 @@ exports.deleteAudio = (req, res, next) => {
             });
         }
     );
+    /*res.status(200).json({
+        message: 'Deleted!'
+    });*/
 };
+
+exports.getFromDBOneAudio = (_id) => {
+    // console.log("inside _id = ",_id);
+    return Audio.findOne({
+        _id: _id
+    }).then(
+        (audio) => {
+            // console.log("inside audio = ",audio);
+            return audio;
+        }
+    ).catch(
+        (error) => {
+            return null;
+        }
+    );
+}
+
 
 /*
 let globalState = [
