@@ -42,7 +42,8 @@ const PlaylistItem = (props) => {
                 }
                 break;
             case "DELETE":
-                // props.actions.createPlaylistDB(value);
+                props.actions.deletePlaylistDB(props.playlist._id);
+                setIsModalOpenDelete(!isModalOpenDelete);
                 break;
         }
     };

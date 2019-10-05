@@ -7,7 +7,7 @@ router.get('/', PlaylistController.getAllPlaylist);
 router.get('/:id', PlaylistController.getOnePlaylist);
 router.post('/create', PlaylistController.createPlaylist);
 router.put('/update/:id', PlaylistController.updatePlaylist);
-router.delete('/delete', PlaylistController.deletePlaylist);
+router.delete('/delete/:id', PlaylistController.deletePlaylist);
 
 // router.post('/', AudioController.createAudio);
 /*
