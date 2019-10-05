@@ -31,10 +31,9 @@
     "cors": "^2.8.5",
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
-    "get-audio-duration": "^1.0.0",
-    "jsmediatags": "^3.9.2",
     "mongoose": "^5.7.1",
     "morgan": "^1.9.1",
-    "multer": "^1.4.2"
+    "multer": "^1.4.2",
+    "music-metadata": "^4.8.0"
   }
 }
