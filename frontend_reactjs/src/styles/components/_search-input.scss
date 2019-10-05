@@ -1,0 +1,21 @@
+.cr-search-form {
+  position: relative;
+
+  &__icon-search {
+    position: absolute;
+    left: 8px;
+  }
+
+  &__input {
+    /* stylelint-disable-next-line */
+    padding-left: 35px !important;
+  }
+}
+
+.btn-file input{
+  //display: none;
+  color: #fff;
+  background-color: #3858fa;
+  background-image: none;
+  border-color: #2c4ef9;
+}
