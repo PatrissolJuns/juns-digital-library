@@ -1,0 +1,3 @@
+export const UPDATE_SHOW = 'UPDATE_SHOW';
+export const UPDATE_PLAY = 'UPDATE_PLAY';
+export const UPDATE_AUDIOLISTS = 'UPDATE_AUDIOLISTS';

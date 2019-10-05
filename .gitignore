@@ -19,6 +19,7 @@
 
 /.idea
 /.old
+save_node_modules.zip
 
 npm-debug.log*
 yarn-debug.log*
