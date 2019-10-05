@@ -98,7 +98,7 @@ const PlaylistItem = (props) => {
                 <Media>
                     <Button
                         outline className="mr-2" color="primary" size="sm">
-                        <Link to={{pathname:`/view-playlist/:${props.playlist._id}`}} ><MdRemoveRedEye className="mr-2" />View</Link>
+                        <Link to={{pathname:`/view-playlist/${props.playlist._id}`}} ><MdRemoveRedEye className="mr-2" />View</Link>
                     </Button>
                     <Button
                         onClick={() => toggle("RENAME")}

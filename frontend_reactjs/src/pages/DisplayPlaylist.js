@@ -8,6 +8,9 @@ import { MdPersonPin } from 'react-icons/md';
 import { TiTime } from 'react-icons/ti';
 
 const DisplayPlaylist = (props) => {
+    console.log("props = ", props);
+    const playlist = props.playlists[0];
+    console.log("playlist = ", playlist);
     return (
         <Page
             title="All playlist"
@@ -24,18 +27,18 @@ const DisplayPlaylist = (props) => {
                                     style={{ width: 'auto', height: 200 }}
                                 />
                                 <CardBody>
-                                    <CardTitle className="album-title">Centure Noir</CardTitle>
-                                    <CardSubtitle className="album-sub-title">Maître Gims</CardSubtitle>
+                                    <CardTitle className="album-title">{playlist.name}</CardTitle>
+                                    {/*<CardSubtitle className="album-sub-title">Maître Gims</CardSubtitle>*/}
                                     <CardText className="album-detail">
                                         <ul>
                                             <li>30 musics</li>
                                             <li className="dot-before">2 h 34 min</li>
-                                            <li className="dot-before">2018</li>
+                                            {/*<li className="dot-before">2018</li>*/}
                                         </ul>
                                     </CardText>
                                     <div className="juns-show-div-circle center-hor-ver">
                                         <span className="thing-circle rounded-circle mb-2"></span>
-                                        <h4 className="m-0">40</h4>
+                                        <h4 className="m-0">{playlist.audioList.length}</h4>
                                         <h5 className="m-0">Tracks</h5>
                                     </div>
                                 </CardBody>
