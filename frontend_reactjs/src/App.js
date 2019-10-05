@@ -12,6 +12,7 @@ import UploadAudioContainer from "./containers/UploadAudioContainer";
 import {ToastContainer, toast} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import {Col} from "reactstrap";
+import DisplayPlaylist from "./pages/DisplayPlaylist";
 
 // const AddTrackPage = React.lazy(() => import('./pages/AddTrackPage'));
 const SingleAlbumPage = React.lazy(() => import('./pages/SingleAlbumPage'));
@@ -51,6 +52,7 @@ class App extends React.Component {
                 <Route exact path="/playlist" component={PlaylistsContainer} />
                 <Route exact path="/single-album" component={SingleAlbumPage} />
                 <Route exact path="/add-track" component={UploadAudioContainer} />
+                <Route exact path="/view-playlist/:id" component={DisplayPlaylist} />
               </React.Suspense>
             </MainLayout>
             <Redirect to="/" />

@@ -63,10 +63,11 @@ export const deletePlaylistDB = (_id) => {
     };
 };
 
-export const addPlaylist = ({id, name}) => ({
+export const addPlaylist = ({id, name, audioList}) => ({
     type: types.ADD_PLAYLIST,
     id,
-    name
+    name,
+    audioList
 });
 
 export const updatePlaylist = (playlist) => ({

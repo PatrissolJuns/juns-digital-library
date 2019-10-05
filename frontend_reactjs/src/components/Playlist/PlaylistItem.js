@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from "react-router-dom";
 import {
     Button,
     Card,
@@ -89,14 +90,15 @@ const PlaylistItem = (props) => {
             </Modal>
             <CardImg top src={bg11Image} />
             <CardBody>
-                <CardTitle>{props.playlist._id}</CardTitle>
-                <CardText style={{ "fontSize": '13px' }}>
-                    {props.playlist.name}
+                <CardTitle>{props.playlist.name}</CardTitle>
+                <CardText className="playlist-item center-hor-ver">
+                    <h5 className="mb-0">{props.playlist.audioList.length}</h5>
+                    <h6 className="mt-0">tracks</h6>
                 </CardText>
                 <Media>
                     <Button
                         outline className="mr-2" color="primary" size="sm">
-                        <MdRemoveRedEye className="mr-2" />View
+                        <Link to={{pathname:`/view-playlist/:${props.playlist._id}`}} ><MdRemoveRedEye className="mr-2" />View</Link>
                     </Button>
                     <Button
                         onClick={() => toggle("RENAME")}
