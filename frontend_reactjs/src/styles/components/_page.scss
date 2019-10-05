@@ -104,3 +104,14 @@
 }
 .no-border {border: none;}
 .no-bg-color {background: none;}
+
+.play-button {
+  color: #6a82fb;
+  border-color: #6a82fb;
+}
+
+.play-button:hover {
+  cursor: pointer;
+  color: #6a82fb;
+  border-color: #6a82fb;
+}

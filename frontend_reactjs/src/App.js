@@ -7,11 +7,14 @@ import componentQueries from 'react-component-queries';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import './styles/reduction.scss';
 import PlaylistsContainer from "./containers/PlaylistsContainer";
+import DashboardPageContainer from "./containers/DashboardPageContainer";
+import UploadAudioContainer from "./containers/UploadAudioContainer";
+import {ToastContainer, toast} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import {Col} from "reactstrap";
 
-const AddTrackPage = React.lazy(() => import('./pages/AddTrackPage'));
-const PlaylistPage = React.lazy(() => import('./pages/PlaylistPage'));
+// const AddTrackPage = React.lazy(() => import('./pages/AddTrackPage'));
 const SingleAlbumPage = React.lazy(() => import('./pages/SingleAlbumPage'));
-const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
 
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
@@ -20,6 +23,7 @@ const getBasename = () => {
 class App extends React.Component {
   render() {
 
+    // toast.success('on change');
     return (
       <BrowserRouter basename={getBasename()}>
           <Switch>
@@ -41,17 +45,19 @@ class App extends React.Component {
                 <AuthPage {...props} authState={STATE_SIGNUP} />
               )}
             />
-
             <MainLayout breakpoint={this.props.breakpoint}>
               <React.Suspense fallback={<PageSpinner />}>
-                <Route exact path="/" component={DashboardPage} />
+                <Route exact path="/" component={DashboardPageContainer} />
                 <Route exact path="/playlist" component={PlaylistsContainer} />
                 <Route exact path="/single-album" component={SingleAlbumPage} />
-                <Route exact path="/add-track" component={AddTrackPage} />
+                <Route exact path="/add-track" component={UploadAudioContainer} />
               </React.Suspense>
             </MainLayout>
             <Redirect to="/" />
           </Switch>
+
+        <ToastContainer />
+
       </BrowserRouter>
     );
   }

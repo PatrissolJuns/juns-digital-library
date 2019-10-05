@@ -14,7 +14,7 @@ const { getAudioDurationInSeconds } = require('get-audio-duration');
 getAudioInformation = (audio) => {
     let data = {}; let tag = null; let cover = 'default_audio.jpg'; let duration = null;
     return new Promise((resolve, reject) => {
-        jsmediatags.read(audio, {
+        jsmediatags.read(audio.path, {
             onSuccess: function(_tag) {
                 // console.log(tag);
                 tag = _tag;
@@ -41,21 +41,20 @@ getAudioInformation = (audio) => {
                     }
                 }
 
-                getAudioDurationInSeconds(audio).then((_duration) => {
+                getAudioDurationInSeconds(audio.path).then((_duration) => {
                     // console.log("duration = ", duration)
                     // console.log("duration = ", parseInt(duration / 60, 10) + ":" + parseInt(duration % 60))
-                    duration = _duration;
+                    data = {
+                        artist: tag.tags.artist === undefined ? "unknown" : tag.tags.artist,
+                        album: tag.tags.album === undefined ? "unknown" : tag.tags.album,
+                        cover: cover,
+                        duration: _duration,
+                        track: audio.originalname,
+                        // track: tag.tags.track === undefined ? "unknown" : tag.tags.track,
+                        year: tag.tags.year === undefined ? "unknown" : tag.tags.year,
+                    };
+                    resolve(data);
                 });
-
-                data = {
-                    artist: tag.tags.artist === undefined ? "unknown" : tag.tags.artist,
-                    album: tag.tags.album === undefined ? "unknown" : tag.tags.album,
-                    cover: cover,
-                    duration: duration,
-                    track: tag.tags.track === undefined ? "unknown" : tag.tags.track,
-                    year: tag.tags.year === undefined ? "unknown" : tag.tags.year,
-                };
-                resolve(data);
             },
             onError: function(error) {
                 console.log(':(', error.type, error.info);
@@ -66,7 +65,8 @@ getAudioInformation = (audio) => {
 };
 
 exports.createAudio = (req, res, next) => {
-    getAudioInformation(req.file.path).then(
+    // console.log("req.file = ",req.file);
+    getAudioInformation(req.file).then(
         (_data) => {
             // console.log("data = ",_data);
             const audio = new Audio({
@@ -83,8 +83,9 @@ exports.createAudio = (req, res, next) => {
             });
             audio.save().then(
                 (audio) => {
+                    console.log("inside node");
                     res.status(201).json({
-                        message: req.file
+                        message: "audio successfully saved!"
                     });
                 }
             ).catch(

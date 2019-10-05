@@ -11,20 +11,20 @@ const MIME_TYPES = {
 
 const maxSize = 900000000;
 
+
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
         callback(null, 'Storage/audios');
         // callback(null, 'config');
     },
     filename: (req, file, callback) => {
-        console.log("dsqdqsd = ");
         const name = file.originalname.split(' ').join('_');
         const extension = MIME_TYPES[file.mimetype];
         callback(null, Date.now() + '.' + extension);
     }
 });
 
-module.exports = multer({storage: storage, limits: {fileSize: maxSize }}).single('audioMulter');
+module.exports = multer({storage: storage, limits: {fileSize: maxSize }}).single('audio');
 
 
 

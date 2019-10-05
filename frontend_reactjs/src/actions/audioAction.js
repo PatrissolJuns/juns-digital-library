@@ -1,26 +1,44 @@
-import * as types from '../constants/PlaylistActionTypes'
+import * as types from '../constants/AudioActionTypes'
 import axios from 'axios';
 
-const apiUrl = "http://localhost:3001/api/playlist";
+const apiUrl = "http://localhost:3001/api/audio";
 
-export const fetchAllPlaylistsDB = () => {
+export const fetchAllAudioDB = () => {
     return (dispatch) => {
+        /*return dispatch(fetchAudio([{
+            "_id" : "5d9593012351295af4757fb2",
+            "belongToPlaylist" : [ ],
+            "artist" : "Maître Gims",
+            "album" : "Ceinture noire",
+            "cover" : "1570083585354.png",
+            "duration" : "221.152653",
+            "isBookmark" : false,
+            "musicSrc" : "1570083584468.mp3",
+            "size" : 9032742,
+            "track" : "38 Les roses ont des epines.mp3",
+            "year" : "2018"
+        }]));*/
         return axios.get(apiUrl + "/")
                     .then(response => {
-                        dispatch(fetchPlaylists(response.data))
+                        dispatch(fetchAudio(response.data))
                     })
                     .catch(error => {
                         throw(error);
                     });
     };
 };
+const config = {
+    headers: { 'content-type': 'multipart/form-data' }
+}
 
-export const createPlaylistDB = (name) => {
+export const createAudioDB = (data) => {
     return (dispatch) => {
-        return axios.post(`${apiUrl}/create`, {name})
+        console.log("passage create dans l'action" ,data);
+        return axios.post(`${apiUrl}/create`, data, config)
                     .then(response => {
                         console.log("response.data = ",response.data);
-                        dispatch(addPlaylist(response.data))
+                        // dispatch(addAudio(response.data))
+                        dispatch(fetchAllAudioDB());
                     })
                     .catch(error => {
                         throw(error);
@@ -28,24 +46,24 @@ export const createPlaylistDB = (name) => {
     };
 };
 
-export const addPlaylist = ({id, name}) => ({
-    type: types.ADD_PLAYLIST,
+/*export const addAudio = ({id, name}) => ({
+    type: types.ADD_AUDIO,
     id,
     name
-});
+});*/
 
-export const editPlaylist = (id, name) => ({
-    type: types.EDIT_PLAYLIST,
+export const editAudio = (id, name) => ({
+    type: types.EDIT_AUDIO,
     id: id,
     name: name
 });
 
-export const deletePlaylist = (id) => ({
-    type: types.DELETE_PLAYLIST,
+export const deleteAudio = (id) => ({
+    type: types.DELETE_AUDIO,
     id: id
 });
 
-export const fetchPlaylists = (playlists) => ({
-    type: types.FETCH_PLAYLIST,
-    playlists
+export const fetchAudio = (audios) => ({
+    type: types.FETCH_AUDIO,
+    audios
 });

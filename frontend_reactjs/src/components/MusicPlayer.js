@@ -1,19 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactJkMusicPlayer from "react-jinke-music-player";
 import {FaHeadphones} from 'react-icons/fa';
 import "react-jinke-music-player/assets/index.css";
 import PropTypes from "./../utils/propTypes";
 
 
-const MusicPlayer = ({audioLists}) => {
+const MusicPlayer = ({defaultPlayIndex, audioLists}) => {
+    console.log("defaultPlayIndex = ",defaultPlayIndex);
+    const [te, setTE] = useState(defaultPlayIndex);
+
+    useEffect(() => {
+        return () => {
+            setTE(defaultPlayIndex);
+        };
+    }, [te]);
+
+
+    console.log("te = ",te);
+
     return (
-        <ReactJkMusicPlayer audioLists={audioLists} { ...options }/>
+        <ReactJkMusicPlayer defaultPlayIndex={te} audioLists={audioLists} { ...options }/>
     )
 }
 
 MusicPlayer.propTypes = {
     // ss: PropTypes.component,
     // size: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    defaultPlayIndex: PropTypes.number,
     audioLists: PropTypes.arrayOf(
         PropTypes.shape({
             name: PropTypes.string,
@@ -59,6 +72,7 @@ const tmp_audioList = [
 ];
 
 MusicPlayer.defaultProps = {
+    defaultPlayIndex: 0,
     audioLists: []
 };
 
@@ -69,7 +83,7 @@ const options = {
     // audioLists: audioLists,
 
     //default play index of the audio player  [type `number` default `0`]
-    defaultPlayIndex: 0,
+    // defaultPlayIndex: 0,
 
     //if you want dynamic change current play audio you can change it [type `number` default `0`]
     // playIndex: 0,
@@ -120,10 +134,10 @@ const options = {
     closeText: 'close',
 
     //audio theme switch checkedText  [ type `String | ReactNode` default '-']
-    checkedText: 'turn on',
+    checkedText: 'on',
 
     //audio theme switch unCheckedText [ type `String | ReactNode` default '-']
-    unCheckedText: 'turn off',
+    unCheckedText: 'off',
 
     // audio list panel show text of the playlist has no songs [ type `String` | ReactNode  default 'no music']
     notContentText: 'No music',
@@ -132,8 +146,8 @@ const options = {
 
     defaultPlayMode: 'order',
 
-    //audio mode        mini | full          [type `String`  default `mini`]
-    mode: 'mini',
+    //audio mode        mini | full          [type `String`  default `full`]
+    mode: 'full',
 
     /**
      * [ type `Boolean` default 'false' ]

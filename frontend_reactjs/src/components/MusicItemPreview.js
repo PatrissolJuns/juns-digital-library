@@ -8,34 +8,71 @@ import { FaEdit } from 'react-icons/fa';
 import { TiTime } from 'react-icons/ti';
 
 import { NavLink } from 'react-router-dom';
+import BookmarkButton from "./Widget/BookmarkButton";
+import PlayButton from "./PlayButton";
 
+import MusicPlayer from './MusicPlayer';
+import PlayButtonContainer from "../containers/PlayButtonContainer";
 
-const MusicItemPreview = ({ image, title, description, right, ...restProps }) => {
+const getUrlAction = (oldImage, type) => {
+    if(type === "audio") return "http://localhost:3001/file/audios/" + oldImage;
+    else if (type === "image") return "http://localhost:3001/file/images/" + oldImage;
+    else return "";
+}
+
+const getDurationFormat = (duration) => {
+    return parseInt(duration / 60, 10) + ":" + parseInt(duration % 60);
+}
+
+const MusicItemPreview = ({ audio, audios, ...restProps }) => {
+
+    // image={"http://localhost:3001/file/images/" + audio.cover}
+    let album = audio.album;
+    let artist = audio.artist;
+    let belongToPlaylist = audio.artist;
+    let cover = getUrlAction(audio.cover, 'image');
+    let duration = getDurationFormat(audio.duration);
+    let isBookmark = audio.isBookmark;
+    let musicSrc = getUrlAction(audio.musicSrc, 'audio');
+    let size = audio.size;
+    let track = audio.track;
+    let year = audio.year;
 
     const [isOpenMusicItemPopover, setIsOpenMusicItemPopover] = useState(false);
+    const [isPlay, setIsPlay] = useState(false);
 
     function toogleMusicItemPopover(status) {
         setIsOpenMusicItemPopover(!isOpenMusicItemPopover);
     }
 
+    const handleClickPlay = () => {
+        setIsPlay(!isPlay);
+    }
+
+
+
+    const right = "right";
+    console.log("restProps = ",restProps);
     return (
+
         <Media {...restProps}>
             <Media left>
                 <Media
                     object
-                    src={image}
+                    src={cover}
                     className="img-fluid rounded mr-2 mb-2"
-                    style={{ width: 200, height: 'auto' }}
+                    style={{ width: 200, height: 'auto', maxHeight: 150 }}
                 />
             </Media>
             <Media body className="overflow-hidden">
                 <Media heading tag="h5" style={{fontWeight: 600}}>
-                    {title}
+                    {track}
                 </Media>
-                <p className="text-muted text-truncate">{description}</p>
+                {/*<p className="text-muted text-truncate">{artist}</p>*/}
+                <p className="text-muted text-truncate">{album}</p>
                 <Media body tag="h5">
                     <Media>
-                        <TiTime className="mr-2"/> 3:15
+                        <TiTime className="mr-2"/> {duration}
                     </Media>
 
                     {/*<Button outline color="secondary" size="sm">
@@ -44,17 +81,13 @@ const MusicItemPreview = ({ image, title, description, right, ...restProps }) =>
                 </Media>
             </Media>
             <Media right className="align-self-center mr-2">
-                <a href="/components/"> <IoIosPlayCircle size={50} /> </a>
+                <PlayButtonContainer audio={audio} audioLists={audios} />
             </Media>
             <Media right className="align-self-center mr-2">
-                <Button outline color="primary"
-                        style={{ width:"43px", height:"43px" }}
-                        className="rounded-circle">
-                    <IoMdHeart />
-                </Button>
+                <BookmarkButton />
             </Media>
             <Media right className="align-self-center">
-                <Button outline id="musicItemPopover" color="primary">
+                <Button outline id="musicItemPopover" color="primary" style={{ width:"40px", height:"35px", flexDirection: "column" }} >
                     <IoIosMore />
                 </Button>
                 <Popover
@@ -91,16 +124,17 @@ const MusicItemPreview = ({ image, title, description, right, ...restProps }) =>
                     right
                 )}
             </Media>*/}
+
         </Media>
     );
 };
 
-MusicItemPreview.propTypes = {
+/*MusicItemPreview.propTypes = {
     image: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     description: PropTypes.string,
     right: PropTypes.node,
-};
+};*/
 
 
 export default MusicItemPreview;

@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import rootReducer from './reducers';
 import { fetchAllPlaylistsDB } from './actions/playlistAction'
+import {fetchAllAudioDB} from "./actions/audioAction";
 
 import AppContainer from './containers/AppContainer';
 
@@ -20,8 +21,10 @@ let globalState = {
 
 // const store = createStore(rootReducer, globalState, applyMiddleware(thunk));
 const store = createStore(rootReducer, applyMiddleware(thunk));
-
+console.log("before store");
 store.dispatch(fetchAllPlaylistsDB());
+store.dispatch(fetchAllAudioDB());
+console.log("after store");
 
 ReactDOM.render(
     <Provider store={store}>

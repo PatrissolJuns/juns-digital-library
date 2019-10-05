@@ -17,15 +17,16 @@ import {
 } from 'reactstrap';
 import bg11Image from "../assets/img/bg/background_1920-11.jpg";
 
-class DashboardPage extends React.Component {
+const DashboardPage = ({...props}) => {
 
+  console.log("inside comonent");
+  console.log("props.audios = ",props.audios);
 
-  render() {
     return (
       <Page
         className="DashboardPage"
         title="Home"
-        breadcrumbs={[{ name: 'Home', active: true }]}
+        // breadcrumbs={[{ name: 'Home', active: true }]}
       >
         <Row className="display-page-row">
           <Col md="11" sm="12" xs="12">
@@ -103,15 +104,13 @@ class DashboardPage extends React.Component {
                   <CardBody>
                     <Row>
                       <Col md="12" sm="12" xs="12" className="mb-3">
-                        {productsData.map(
-                            ({ id, image, title, description, right }) => (
-                                <MusicItemPreview
-                                    key={id}
-                                    image={image}
-                                    title={title}
-                                    description={description}
-                                    right={right}
-                                />
+                        {props.audios.map(
+                            (audio) => (
+                                  <MusicItemPreview
+                                      key={audio._id}
+                                      audio={audio}
+                                      audios={props.audios}
+                                  />
                             ),
                         )}
                       </Col>
@@ -126,6 +125,6 @@ class DashboardPage extends React.Component {
 
       </Page>
     );
-  }
 }
+
 export default DashboardPage;
