@@ -50,6 +50,26 @@ exports.createPlaylist = (req, res, next) => {
 };
 
 exports.updatePlaylist = (req, res, next) => {
+    console.log("id = ",req.params.id);
+    const playlist = new Playlist({
+        _id: req.params.id,
+        name: req.body.name,
+        audioList: req.body.audioList
+    });
+    Playlist.updateOne({_id: req.params.id}, playlist).then(
+        () => {
+            res.status(201).json(playlist);
+        }
+    ).catch(
+        (error) => {
+            res.status(400).json({
+                error: error
+            });
+        }
+    );
+};
+
+exports.renamePlaylist = (req, res, next) => {
     const playlist = new Playlist({
         _id: req.params.id,
         name: req.body.name,
@@ -69,6 +89,7 @@ exports.updatePlaylist = (req, res, next) => {
         }
     );
 };
+
 
 exports.deletePlaylist = (req, res, next) => {
     Playlist.deleteOne({_id: req.params.id}).then(

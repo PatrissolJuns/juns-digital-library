@@ -1,13 +1,9 @@
 import Page from './../components/Page';
-import React, { useEffect, useState } from 'react';
-import {
-    Button, Card, CardBody, CardImg, CardText, CardTitle, Col, Row,
-    Modal, ModalBody, ModalFooter, ModalHeader, InputGroupAddon, Input, InputGroup
-} from 'reactstrap';
+import React, { useState } from 'react';
+import { Button, Col, Row, Modal, ModalBody, ModalHeader, InputGroupAddon, InputGroup } from 'reactstrap';
 
-import bg11Image from "../assets/img/bg/background_1920-11.jpg";
-import MusicPlayer from "../components/MusicPlayer";
-import axios from 'axios';
+import {NavLink} from "react-router-dom";
+import PlaylistItem from "../components/Playlist/PlaylistItem";
 
 const PlaylistPage = ({...props}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,9 +13,12 @@ const PlaylistPage = ({...props}) => {
     };
 
     const handleSubmit = (event) => {
+        event.preventDefault();
         let value = event.target.new_playlist.value;
-        if(value !== "")
-            props.actions.createPlaylistDB(value)
+        if(value !== "") {
+            props.actions.createPlaylistDB(value);
+            setIsModalOpen(!isModalOpen);
+        }
     };
 
     return (
@@ -42,7 +41,7 @@ const PlaylistPage = ({...props}) => {
                             <ModalHeader toggle={() => toggle()}>Add a new playlist</ModalHeader>
                             <ModalBody>
                                 <form
-                                    onSubmit={handleSubmit}
+                                    onSubmit={(event) => handleSubmit(event)}
                                 >
                                 <InputGroup>
                                     <input
@@ -56,6 +55,7 @@ const PlaylistPage = ({...props}) => {
                                 </form>
                             </ModalBody>
                         </Modal>
+
                     </Row>
 
                     <Row>
@@ -63,43 +63,14 @@ const PlaylistPage = ({...props}) => {
                             return (
                                 <Col key={index} md="4" sm="6" xs="12" className="mb-3">
                                     {/*<MusicPlayer audioLists={audioList}/>*/}
-                                    <Card>
-                                        <CardImg top src={bg11Image} />
-                                        <CardBody>
-                                            <CardTitle>{playlist.id}</CardTitle>
-                                            <CardText style={{ "fontSize": '13px' }}>
-                                                {playlist.name}
-                                            </CardText>
-                                        </CardBody>
-                                    </Card>
+                                    <PlaylistItem
+                                        key={index}
+                                        playlist={playlist}
+                                        actions={props.actions}
+                                    />
                                 </Col>
                             )
                         })}
-                        {/*<Col md="4" sm="6" xs="12" className="mb-3">
-                            <MusicPlayer audioLists={audioList}/>
-                            <Card>
-                                <CardImg top src={bg11Image} />
-                                <CardBody>
-                                    <CardTitle>Card with image</CardTitle>
-                                    <CardText style={{ "fontSize": '13px' }}>
-                                        Some quick example text to build on the card title and make up
-                                        the bulk of the card's content.
-                                    </CardText>
-                                </CardBody>
-                            </Card>
-                        </Col>*/}
-                        {/*<Col md="4" sm="6" xs="12" className="mb-3">
-                            <Card>
-                                <CardImg top src={bg11Image} />
-                                <CardBody>
-                                    <CardTitle>Card with image</CardTitle>
-                                    <CardText style={{ "fontSize": '13px' }}>
-                                        Some quick example text to build on the card title and make up
-                                        the bulk of the card's content.
-                                    </CardText>
-                                </CardBody>
-                            </Card>
-                        </Col>*/}
                     </Row>
                 </Col>
             </Row>

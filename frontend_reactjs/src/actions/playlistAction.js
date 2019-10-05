@@ -28,16 +28,29 @@ export const createPlaylistDB = (name) => {
     };
 };
 
+export const updatePlaylistDB = (_id, name, audioLists) => {
+    return (dispatch) => {
+        return axios.put(`${apiUrl}/update/${_id}`, {name, audioLists})
+            .then(response => {
+                console.log("response.data = ",response.data);
+                dispatch(updatePlaylist(response.data))
+            })
+            .catch(error => {
+                throw(error);
+            });
+    };
+};
+
 export const addPlaylist = ({id, name}) => ({
     type: types.ADD_PLAYLIST,
     id,
     name
 });
 
-export const editPlaylist = (id, name) => ({
-    type: types.EDIT_PLAYLIST,
-    id: id,
-    name: name
+export const updatePlaylist = (playlist) => ({
+    type: types.UPDATE_PLAYLIST,
+    playlist: playlist
+
 });
 
 export const deletePlaylist = (id) => ({

@@ -102,7 +102,7 @@ exports.createAudio = (req, res, next) => {
 exports.getAllAudio = (req, res, next) => {
     Audio.find().then(
         (audios) => {
-            console.log(audios);
+            // console.log(audios);
             res.status(200).json(audios);
         }
     ).catch(
