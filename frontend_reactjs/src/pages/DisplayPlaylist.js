@@ -25,7 +25,7 @@ const DisplayPlaylist = (props) => {
     const [isModalOpenRemove, setIsModalOpenRemove] = useState(false);
 
     const playlist = props.playlists;
-
+    console.log("juns = ",playlist);
     const toggle = (event, action) => {
         event.preventDefault();
         switch (action) {

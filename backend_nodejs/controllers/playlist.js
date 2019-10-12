@@ -1,4 +1,6 @@
 const Playlist = require('../models/Playlist');
+const Audio = require('../models/Audio');
+const AudioController = require('../controllers/audio');
 
 exports.getAllPlaylist = (req, res, next) => {
     Playlist.find().then(
@@ -49,7 +51,27 @@ exports.createPlaylist = (req, res, next) => {
     );
 };
 
-exports.updatePlaylist = (req, res, next) => {
+exports.updatePlaylist = async (req, res, next) => {
+    let response = await this.updateFromDBOnePlaylist(req.params.id, req.body.name,
+        req.body.audioList, req.body.isAdd);
+    let playlist = await this.getFromDBOnePlaylist(req.params.id);
+    console.log("playlist = ",playlist);
+    // let response = true;
+    console.log("response = ",response);
+    if(response) {
+        res.status(200).json({
+            error: 'An error occur'
+        });
+    }
+    else {
+        res.status(400).json({
+            error: 'An error occur'
+        });
+    }
+}
+
+
+exports.updatePlaylist2 = (req, res, next) => {
     console.log("id = ",req.params.id);
 
     let oldPlaylist = null;
@@ -90,7 +112,7 @@ exports.updatePlaylist = (req, res, next) => {
 
 };
 
-exports.deletePlaylist = (req, res, next) => {
+/*exports.deletePlaylist = (req, res, next) => {
     Playlist.deleteOne({_id: req.params.id}).then(
         () => {
             res.status(200).json({
@@ -104,7 +126,7 @@ exports.deletePlaylist = (req, res, next) => {
             });
         }
     );
-};
+};*/
 
 
 exports.de = (req, res, next) => {
@@ -118,9 +140,12 @@ exports.de = (req, res, next) => {
 };
 
 exports.getFromDBOnePlaylist = (_id) => {
+    console.log("_id == ",_id);
     return Playlist.findOne({
-        _id: _id
-    }).then( (playlist) => playlist)
+        _id: "" + _id
+    }).then( (playlist) => {
+        return playlist;
+    })
     .catch(
         (error) => {
             return null;
@@ -128,17 +153,55 @@ exports.getFromDBOnePlaylist = (_id) => {
     );
 }
 
-exports.updateFromDBOnePlaylist = async (_id, newName, _newAudioList, isAdd) => {
+exports.updateFromDBAudioList = async (_id, _newAudioList, _isAdd) => {
+    let playlist = await this.getFromDBOnePlaylist(_id);
+    let newAudioList = [];
+
+    if(_isAdd) {
+        /*console.log("_newAudioList = ",_newAudioList);
+        console.log("_newAudioList = " +_newAudioList[0]+ " typeof ", typeof _newAudioList[0]);
+        console.log("playlist.audioList = ",playlist.audioList);
+        console.log("++++++++++++++++++ = ");*/
+        newAudioList = [...new Set([...playlist.audioList, ..._newAudioList])];
+        /*console.log("_newAudioList = ",_newAudioList);
+        console.log("newAudioList = ",newAudioList);*/
+    }
+
+    else {
+        newAudioList = playlist.audioList.filter(audioId => {
+            // console.log("audioId = "+ audioId+" value = " + !_newAudioList.includes(audioId));
+            return !_newAudioList.includes(audioId);
+        });
+    }
+    const newPlaylist = JSON.parse(JSON.stringify(playlist));
+    newPlaylist.audioList = newAudioList;
+
+    // update the audio
+    return Playlist.updateOne({_id: _id}, newPlaylist).then(() => {return true;}).catch(() => {return false;});
+}
+
+exports.updateFromDBOnePlaylist = async (_id, _newName, _newAudioList, _isAdd) => {
     let _playlist = await this.getFromDBOnePlaylist(_id);
     if(_playlist !== null) {
+        let response = [];
         let newAudioList = [];
-        if(isAdd)
-            newAudioList = [...new Set(_playlist.audioList.slice().concat(_newAudioList))];
+
+
+        // update the playlist first
+        _newAudioList.map(async item => {
+            let audioItem = AudioController.getFromDBOneAudio(item);
+
+            if(audioItem !== null) response.push(await AudioController.updateFromDBBelongToPlaylist(item,[_playlist._id], _isAdd))
+        });
+        if(response.some(i => i === false)) return false;
+
+        if(_isAdd)
+            newAudioList = [...new Set([...playlist.audioList, ..._newAudioList])];
         else newAudioList = _playlist.audioList.filter(audio => !_newAudioList.includes(audio));
 
         const playlist = new Playlist({
             _id: _id,
-            name: newName,
+            name: _newName,
             audioList: newAudioList
         });
         return Playlist.updateOne({_id: _id}, playlist).then(
@@ -154,6 +217,46 @@ exports.updateFromDBOnePlaylist = async (_id, newName, _newAudioList, isAdd) => 
     }
 
 }
+
+exports.deletePlaylist = async (req, res, next) => {
+    // let audio = {};
+    // getFromDBOneAudio(req.params.id).then((_audio => audio = _audio));
+
+    let playlist = await this.getFromDBOnePlaylist(req.params.id);
+    let playlistId = playlist._id;
+    let audioList = playlist.audioList;
+
+    console.log("audioListaudioList = ",audioList);
+    Playlist.deleteOne({_id: req.params.id}).then(
+        () => {
+            audioList.map(async item => {
+                let audio = await AudioController.getFromDBOneAudio(item);
+                let response = await AudioController.updateFromDBOneAudio(
+                    audio._id, audio.name, [playlistId], false
+                );
+                if(!response) {
+                    res.status(500).json({
+                        error: "something went wrong"
+                    });
+                }
+            });
+            res.status(200).json({
+                message: 'Deleted!'
+            });
+        }
+    ).catch(
+        (error) => {
+            res.status(400).json({
+                error: error
+            });
+        }
+    );
+    /*res.status(200).json({
+        message: 'Deleted!'
+    });*/
+};
+
+
 /*let PlaylistJuns = {};
 const t = async () => {
     PlaylistJuns = await this.getFromDBOnePlaylist("5d951e1bf5d45107c3be9e8d");
@@ -177,6 +280,23 @@ t();*/
 );
 console.log("response = ",response);*/
 
+console.log("************************************* start action *************************************  ");
+
+const a = async () => {
+    let res = await this.updateFromDBOnePlaylist("5d9cab9ec294a40d091e7e88",
+        "Test 2", ["5d97eb5703ca1a32aab08786"], false);
+
+    console.log("a = ",res);
+    /*res.then(
+        (data) => console.log("data = ",data)
+    ).catch(
+        (error) => console.log("error = ",error)
+    );*/
+}
+
+// a();
+
+console.log("************************************* end action *************************************  ");
 
 
 

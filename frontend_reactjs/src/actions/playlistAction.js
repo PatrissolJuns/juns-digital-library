@@ -37,6 +37,8 @@ export const updatePlaylistDB = (_id, name, audioList, isAdd = true) => {
                 if(response.status === 200) {
                     dispatch(updatePlaylist(response.data));
                     toast.success("Playlist updated successfully");
+                } else {
+                    toast.error("WARNING : Error while trying to update a playlist");
                 }
             })
             .catch(error => {

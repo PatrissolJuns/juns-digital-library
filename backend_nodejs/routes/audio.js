@@ -8,6 +8,7 @@ router.get('/', AudioController.getAllAudio);
 router.get('/:id', AudioController.getOneAudio);
 router.post('/create', audioMulter, AudioController.createAudio);
 router.put('/rename/:id', AudioController.renameAudio);
+router.put('/update/:id', AudioController.updateAudio);
 router.delete('/delete/:id', AudioController.deleteAudio);
 
 
