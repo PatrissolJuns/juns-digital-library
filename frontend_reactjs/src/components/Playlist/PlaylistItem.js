@@ -96,10 +96,12 @@ const PlaylistItem = (props) => {
                     <h6 className="mt-0">tracks</h6>
                 </CardText>
                 <Media>
+                    <Link to={{pathname:`/view-playlist/${props.playlist._id}`}} >
                     <Button
                         outline className="mr-2" color="primary" size="sm">
-                        <Link to={{pathname:`/view-playlist/${props.playlist._id}`}} ><MdRemoveRedEye className="mr-2" />View</Link>
+                        <MdRemoveRedEye className="mr-2" />View
                     </Button>
+                    </Link>
                     <Button
                         onClick={() => toggle("RENAME")}
                         className="mr-2"size="sm">

@@ -9,7 +9,7 @@ const playlist = (state = [], action) => {
                     audioList: action.audioList
                 }];
         case types.UPDATE_PLAYLIST:
-            console.log("action.name = ",action.playlist.name);
+            // console.log("action.name = ",action.playlist.name);
             return state.map((_playlist) => {
                         if (_playlist._id === action.playlist._id) {
                             return Object.assign({}, _playlist,{name: action.playlist.name, audioList: action.playlist.audioList})

@@ -1,4 +1,6 @@
 const Playlist = require('../models/Playlist');
+const Audio = require('../models/Audio');
+const AudioController = require('../controllers/audio');
 
 exports.getAllPlaylist = (req, res, next) => {
     Playlist.find().then(
@@ -30,6 +32,25 @@ exports.getOnePlaylist = (req, res, next) => {
     );
 }
 
+exports.getFromDBOnePlaylist = (_id) => {
+    return Playlist.findOne({
+        _id: "" + _id
+    }).then( (playlist) => {
+        return playlist;
+    })
+        .catch(
+            (error) => {
+                return null;
+            }
+        );
+}
+
+exports.getFromDBPlaylists = () => {
+    return Playlist.find()
+        .then( (playlists) => {return playlists;})
+        .catch( (error) => {return null;});
+}
+
 exports.createPlaylist = (req, res, next) => {
     const playlist = new Playlist({
         name: req.body.name,
@@ -47,68 +68,67 @@ exports.createPlaylist = (req, res, next) => {
             });
         }
     );
+}
+
+exports.updatePlaylist = async (req, res, next) => {
+    let response = await this.updateFromDBOnePlaylist(req.params.id, req.body.name,
+        req.body.audioList, req.body.isAdd);
+    let playlist = await this.getFromDBOnePlaylist(req.params.id);
+    console.log("playlist = ",playlist);
+    // let response = true;
+    console.log("response = ",response);
+    if(response) res.status(200).json(playlist);
+    else {
+        res.status(400).json({
+            error: 'An error occur while trying to update the playlist'
+        });
+    }
+}
+
+exports.de = (req, res, next) => {
+    // req.body.thing = JSON.parse(req.body.thing);
+    const url = req.protocol + '://' + req.get('host');
+    console.log("req.file = ",req.file);
+    res.status(200).json({
+        message:  req.file,
+        url:  url
+    });
 };
 
-exports.updatePlaylist = (req, res, next) => {
-    console.log("id = ",req.params.id);
+exports.updateFromDBOnePlaylist = async (_id, _newName, _newAudioList, _isAdd) => {
+    let _playlist = await this.getFromDBOnePlaylist(_id);
+    if(_playlist !== null) {
+        let newAudioList = [];
 
-    let oldPlaylist = null;
-    Playlist.findOne({
-        _id: req.params.id
-    }).then(
-        (_playlist) => {
-            // const set1 = new Set([1, 2, 3, 4, 5]);
+        if(_isAdd)
+            newAudioList = [...new Set([..._playlist.audioList, ..._newAudioList])];
+        else newAudioList = _playlist.audioList.filter(audio => !_newAudioList.includes(audio));
 
-            // console.log("set1 = ",set1.has(1));
-            // expected output: true
+        const playlist = new Playlist({
+            _id: _id,
+            name: _newName,
+            audioList: newAudioList
+        });
+        return Playlist.updateOne({_id: _id}, playlist).then(
+            () => {
+                return true;
+            }
+        ).catch(
+            (error) => {
+                return false;
+            }
+        );
+    }
+}
 
+exports.deletePlaylist = async (req, res, next) => {
+    let playlist = await this.getFromDBOnePlaylist(req.params.id);
 
-            /*oldPlaylist = _playlist;
-            console.log("_playlist = ",oldPlaylist);
-            let fusion = oldPlaylist.audioList.slice().concat(req.body.audioList);
-            console.log("fusion = ",fusion);*/
-            // first merge the two items of audioList in order to not loose old data
-            let newAudioList = [];
-            if(req.body.isAdd)
-                newAudioList = [...new Set(_playlist.audioList.slice().concat(req.body.audioList))];
-            else newAudioList = _playlist.audioList.filter(audio => !req.body.audioList.includes(audio));
-            // let arr = [oldPlaylist.audioList, req.body.audioList];
-            // let newTab = [...new Set([].concat(...arr))];
-
-            console.log("newAudioList = ", newAudioList);
-
-            const playlist = new Playlist({
-                _id: req.params.id,
-                name: req.body.name,
-                audioList: newAudioList
-            });
-            Playlist.updateOne({_id: req.params.id}, playlist).then(
-                () => {
-                    res.status(200).json(playlist);
-                }
-            ).catch(
-                (error) => {
-                    res.status(400).json({
-                        error: error
-                    });
-                }
-            );
-        }
-    ).catch(
-        (error) => {
-            res.status(404).json({
-                error: error
-            });
-        }
-    );
-
-};
-
-exports.deletePlaylist = (req, res, next) => {
+    console.log("audioListaudioList = ",playlist.audioList);
     Playlist.deleteOne({_id: req.params.id}).then(
         () => {
             res.status(200).json({
-                message: 'Deleted!'
+                message: 'Playlist deleted successfully!'
             });
         }
     ).catch(
@@ -121,21 +141,46 @@ exports.deletePlaylist = (req, res, next) => {
 };
 
 
-exports.de = (req, res, next) => {
-    // req.body.thing = JSON.parse(req.body.thing);
-    const url = req.protocol + '://' + req.get('host');
-    console.log("req.file = ",req.file);
-    res.status(200).json({
-        message:  req.file,
-        url:  url
-    });
-};
+/*let PlaylistJuns = {};
+const t = async () => {
+    PlaylistJuns = await this.getFromDBOnePlaylist("5d951e1bf5d45107c3be9e8d");
+    console.log('PlaylistJuns = ',PlaylistJuns);
+
+    let response = null;
+    const r = async () =>{
+        console.log('debut ');
+        response = await this.updateFromDBOnePlaylist(
+            PlaylistJuns._id, PlaylistJuns.name, ["5d959e072351295af4757fb7"], false
+        );
+        console.log('response = ',response);
+    }
+    r();
+}
+t();*/
 
 
+/*let response = this.updateFromDBOnePlaylist(
+    PlaylistJuns._id, PlaylistJuns.name, [audioId], false
+);
+console.log("response = ",response);*/
 
+console.log("************************************* start action *************************************  ");
 
+const a = async () => {
+    let res = await this.updateFromDBOnePlaylist("5d9ca5a25837a208e50c63f6",
+        "dqsdqs", ["5da238792f0e9f1ae7eb4f6e"], false);
 
+    console.log("a = ",res);
+    /*res.then(
+        (data) => console.log("data = ",data)
+    ).catch(
+        (error) => console.log("error = ",error)
+    );*/
+}
 
+// a();
+
+console.log("************************************* end action *************************************  ");
 
 
 

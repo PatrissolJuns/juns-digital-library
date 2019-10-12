@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const AudioSchema = new mongoose.Schema({
     artist: String,
     album: String,
-    belongToPlaylist: [String],
     cover: String,
     duration: String,
     isBookmark: Boolean,

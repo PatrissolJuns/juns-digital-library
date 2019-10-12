@@ -22,7 +22,7 @@ const PlayButton = ({audio, ...props}) => {
 
         setIsPlay(!isPlay);
     };
-    console.log("_audioListsprops = ",props);
+    // console.log("_audioListsprops = ",props);
     /*const audioLists = props.audioLists.map(audio => {
         return {
             name: audio.track,

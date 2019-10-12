@@ -8,7 +8,8 @@ import PlaylistItem from "../components/Playlist/PlaylistItem";
 const PlaylistPage = ({...props}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const toggle = () => {
+    const toggle = (event) => {
+        event.preventDefault();
         setIsModalOpen(!isModalOpen);
     };
 
@@ -30,15 +31,15 @@ const PlaylistPage = ({...props}) => {
                 <Col md="11" sm="12" xs="12">
                     <Row>
                         <Button
-                            onClick={() => toggle()}
+                            onClick={(event) => toggle(event)}
                             outline className="mb-12" color="primary" size="sm">
                             Ajouter une nouvelle playlist
                         </Button>
                         <Modal
                             isOpen={isModalOpen}
-                            toggle={() => toggle()}
+                            toggle={(event) => toggle(event)}
                             className={props.className + " modal-dialog-centered"}>
-                            <ModalHeader toggle={() => toggle()}>Add a new playlist</ModalHeader>
+                            <ModalHeader toggle={(event) => toggle(event)}>Add a new playlist</ModalHeader>
                             <ModalBody>
                                 <form
                                     onSubmit={(event) => handleSubmit(event)}

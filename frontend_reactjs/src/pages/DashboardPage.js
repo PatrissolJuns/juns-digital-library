@@ -18,10 +18,6 @@ import {
 import bg11Image from "../assets/img/bg/background_1920-11.jpg";
 
 const DashboardPage = ({...props}) => {
-
-  console.log("inside comonent");
-  console.log("props.audios = ",props.audios);
-
     return (
       <Page
         className="DashboardPage"
@@ -110,6 +106,7 @@ const DashboardPage = ({...props}) => {
                                       key={audio._id}
                                       audio={audio}
                                       audios={props.audios}
+                                      actions={props.actions}
                                   />
                             ),
                         )}

@@ -15,7 +15,6 @@ import {
     ModalHeader, ModalBody, InputGroup, InputGroupAddon, Input, Label, FormGroup
 } from 'reactstrap';
 import bg1Image from "../assets/img/bg/background_640-1.jpg";
-import {musicItemTable} from "../demos/dashboardPage";
 import MusicItemTable from "../components/MusicItemTable";
 import { MdPersonPin } from 'react-icons/md';
 import { TiTime } from 'react-icons/ti';
@@ -25,8 +24,8 @@ const DisplayPlaylist = (props) => {
     const [isModalOpenRemove, setIsModalOpenRemove] = useState(false);
 
     const playlist = props.playlists;
-
-    const toggle = (action) => {
+    const toggle = (event, action) => {
+        event.preventDefault();
         switch (action) {
             case "ADD":
                 setIsModalOpenAdd(!isModalOpenAdd);
@@ -42,13 +41,14 @@ const DisplayPlaylist = (props) => {
         switch (action) {
             case "ADD":
                 let dataToBeAdd = Object.values(event.target.audioSelectedAdd).filter(input => input.checked === true).map(input => input.value);
+                console.log("dataToBeAdd = ",dataToBeAdd);
                 props.actions.updatePlaylistDB(playlist._id, playlist.name, dataToBeAdd);
-                toggle("ADD");
+                toggle(event,"ADD");
                 break;
             case "REMOVE":
                 let dataToBeRemove = Object.values(event.target.audioSelectedRemove).filter(input => input.checked === true).map(input => input.value);
                 props.actions.updatePlaylistDB(playlist._id, playlist.name, dataToBeRemove, false);
-                toggle("REMOVE");
+                toggle(event,"REMOVE");
                 break;
         }
 
@@ -97,28 +97,28 @@ const DisplayPlaylist = (props) => {
                                 Listen
                             </Button>
                             <Button
-                                onClick={() => toggle("ADD")}
+                                onClick={(event) => toggle(event,"ADD")}
                                 outline className="mr-12" color="primary" size="sm">
                                 Add new music
                             </Button>
                             <Button
-                                onClick={() => toggle("REMOVE")}
+                                onClick={(event) => toggle(event,"REMOVE")}
                                 outline className="mr-12" color="danger" size="sm">
                                 Remove music
                             </Button>
                             <Modal
                                 isOpen={isModalOpenAdd}
-                                toggle={() => toggle("ADD")}
+                                toggle={(event) => toggle(event,"ADD")}
                                 className={props.className + " modal-dialog-centered"}>
-                                <ModalHeader toggle={() => toggle("ADD")}>Add a music to playlist</ModalHeader>
+                                <ModalHeader toggle={(event) => toggle(event,"ADD")}>Add a music to playlist</ModalHeader>
                                 <ModalBody>
                                     <form
                                         onSubmit={(event) => handleSubmit(event, "ADD")}
                                     >
                                         {props.audios.map(audio => (
-                                            <FormGroup check>
+                                            <FormGroup key={audio._id} check>
                                                 <Label check>
-                                                    <Input value={audio._id} type="checkbox" name="audioSelectedAdd"/> {audio.track}
+                                                    <Input value={audio._id} type="checkbox" name="audioSelectedAdd"/> {audio.track + audio._id}
                                                 </Label>
                                             </FormGroup>
                                         ))}
@@ -129,9 +129,9 @@ const DisplayPlaylist = (props) => {
 
                             <Modal
                                 isOpen={isModalOpenRemove}
-                                toggle={() => toggle("REMOVE")}
+                                toggle={(event) => toggle(event,"REMOVE")}
                                 className={props.className + " modal-dialog-centered"}>
-                                <ModalHeader toggle={() => toggle("REMOVE")}>Remove a music to the playlist</ModalHeader>
+                                <ModalHeader toggle={(event) => toggle(event,"REMOVE")}>Remove a music to the playlist</ModalHeader>
                                 <ModalBody>
                                     <form
                                         onSubmit={(event) => handleSubmit(event, "REMOVE")}

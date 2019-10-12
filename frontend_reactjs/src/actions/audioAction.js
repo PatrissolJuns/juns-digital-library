@@ -1,5 +1,6 @@
 import * as types from '../constants/AudioActionTypes'
 import axios from 'axios';
+import {toast} from "react-toastify";
 
 const apiUrl = "http://localhost:5200/api/audio";
 
@@ -46,24 +47,58 @@ export const createAudioDB = (data) => {
     };
 };
 
+export const renameAudioDB = (_id, track) => {
+    return (dispatch) => {
+        return axios.put(`${apiUrl}/rename/${_id}`, {track})
+            .then(response => {
+                console.log("response.data = ",response.data);
+                if(response.status === 200) {
+                    dispatch(renameAudio(response.data));
+                    toast.success("Playlist updated successfully");
+                }
+            })
+            .catch(error => {
+                toast.error("Error while trying to update a playlist");
+                throw(error);
+            });
+    };
+};
+
+export const deleteAudioDB = (_id) => {
+    return (dispatch) => {
+        return axios.delete(`${apiUrl}/delete/${_id}`)
+            .then(response => {
+                // console.log("response.data = ",response.status);
+                if(response.status === 200) {
+                    dispatch(fetchAllAudioDB());
+                    toast.success("Audio deleted successfully");
+                }
+            })
+            .catch(error => {
+                toast.error("Error while trying to delete a audio");
+                throw(error);
+            });
+    };
+};
+
 /*export const addAudio = ({id, name}) => ({
     type: types.ADD_AUDIO,
     id,
     name
 });*/
 
-export const editAudio = (id, name) => ({
-    type: types.EDIT_AUDIO,
-    id: id,
+const renameAudio = (_id, name) => ({
+    type: types.RENAME_AUDIO,
+    _id: _id,
     name: name
 });
 
-export const deleteAudio = (id) => ({
+const deleteAudio = (_id) => ({
     type: types.DELETE_AUDIO,
-    id: id
+    _id: _id
 });
 
-export const fetchAudio = (audios) => ({
+const fetchAudio = (audios) => ({
     type: types.FETCH_AUDIO,
     audios
 });

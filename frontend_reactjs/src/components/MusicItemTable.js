@@ -10,7 +10,7 @@ import PlayButtonContainer from "../containers/PlayButtonContainer";
 import {getUrlAction, getDurationFormat} from './../utils/builtInFunction';
 
 const MusicItemTable = ({ headers, musicData, ...restProps }) => {
-    console.log("musicData = ",musicData);
+    // console.log("musicData = ",musicData);
     if(musicData === undefined || musicData.some(item => item === undefined)) return null;
   return (
     <Table responsive hover {...restProps}>

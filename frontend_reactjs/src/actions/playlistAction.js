@@ -37,6 +37,8 @@ export const updatePlaylistDB = (_id, name, audioList, isAdd = true) => {
                 if(response.status === 200) {
                     dispatch(updatePlaylist(response.data));
                     toast.success("Playlist updated successfully");
+                } else {
+                    toast.error("WARNING : Error while trying to update a playlist");
                 }
             })
             .catch(error => {
@@ -63,25 +65,25 @@ export const deletePlaylistDB = (_id) => {
     };
 };
 
-export const addPlaylist = ({id, name, audioList}) => ({
+const addPlaylist = ({id, name, audioList}) => ({
     type: types.ADD_PLAYLIST,
     id,
     name,
     audioList
 });
 
-export const updatePlaylist = (playlist) => ({
+const updatePlaylist = (playlist) => ({
     type: types.UPDATE_PLAYLIST,
     playlist: playlist
 
 });
 
-export const deletePlaylist = (_id) => ({
+const deletePlaylist = (_id) => ({
     type: types.DELETE_PLAYLIST,
     _id: _id
 });
 
-export const fetchPlaylists = (playlists) => ({
+const fetchPlaylists = (playlists) => ({
     type: types.FETCH_PLAYLIST,
     playlists
 });

@@ -1,7 +1,17 @@
 import React, { useState } from 'react';
 import PropTypes from './../utils/propTypes';
 
-import {Button, Media, Popover, PopoverBody} from 'reactstrap';
+import {
+    Button, Card,
+    InputGroup,
+    InputGroupAddon,
+    Media,
+    Modal,
+    ModalBody,
+    ModalHeader,
+    Popover,
+    PopoverBody
+} from 'reactstrap';
 import { IoIosPlayCircle, IoMdHeart, IoIosMore, IoIosTrash } from 'react-icons/io';
 import { MdEdit } from 'react-icons/md';
 import { FaEdit } from 'react-icons/fa';
@@ -15,7 +25,7 @@ import MusicPlayer from './MusicPlayer';
 import PlayButtonContainer from "../containers/PlayButtonContainer";
 import {getUrlAction, getDurationFormat} from './../utils/builtInFunction';
 
-const MusicItemPreview = ({ audio, audios, ...restProps }) => {
+const MusicItemPreview = ({ audio, audios, actions, ...restProps }) => {
 
     // image={"http://localhost:5200/file/images/" + audio.cover}
     let album = audio.album;
@@ -39,6 +49,37 @@ const MusicItemPreview = ({ audio, audios, ...restProps }) => {
     const handleClickPlay = () => {
         setIsPlay(!isPlay);
     }
+
+    const [isModalOpenRename, setIsModalRename] = useState(false);
+    const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
+
+    const toggle = (action) => {
+        switch(action) {
+            case "RENAME":
+                setIsModalRename(!isModalOpenRename);
+                break;
+            case "DELETE":
+                setIsModalOpenDelete(!isModalOpenDelete);
+                break;
+        }
+    };
+
+    const handleSubmit = (event, action) => {
+        event.preventDefault();
+        switch(action) {
+            case "RENAME":
+                let value = event.target.rename_music.value;
+                if(value !== "") {
+                    actions.renameAudioDB(audio._id, value);
+                    setIsModalRename(!isModalOpenRename);
+                }
+                break;
+            case "DELETE":
+                actions.deleteAudioDB(audio._id);
+                setIsModalOpenDelete(!isModalOpenDelete);
+                break;
+        }
+    };
 
 
 
@@ -78,35 +119,65 @@ const MusicItemPreview = ({ audio, audios, ...restProps }) => {
                 <BookmarkButton />
             </Media>
             <Media right className="align-self-center">
-                <Button outline id="musicItemPopover" color="primary" style={{ width:"40px", height:"35px", flexDirection: "column" }} >
+                <Button outline id={"musicItemPopover" + audio._id} color="primary" style={{ width:"40px", height:"35px", flexDirection: "column" }} >
                     <IoIosMore />
                 </Button>
                 <Popover
                     placement="left"
                     isOpen={isOpenMusicItemPopover}
                     toggle={toogleMusicItemPopover}
-                    target="musicItemPopover"
+                    target={"musicItemPopover" + audio._id}
                 >
                     <PopoverBody>
-                        <Media style={{padding: "0 0.5rem"}}>
-                            <NavLink className="p-2" exact to="/dit">
-                                <MdEdit className="mr-2" /> Rename
-                            </NavLink>
+                        <Media style={{padding: "0 0.5rem"}} onClick={() => toggle("RENAME")}>
+                            {/*<NavLink className="p-2" exact to="/dit">*/}
+                                <MdEdit className="mr-2" />Rename
+                            {/*</NavLink>*/}
                         </Media>
-                        <Media style={{padding: "0 0.5rem"}}>
-                            <NavLink className="p-2" exact to="/dit">
-                                <FaEdit className="mr-2"/> Edit
-                            </NavLink>
-                        </Media>
-                        <Media style={{padding: "0 0.5rem"}}>
-                            <NavLink className="p-2" exact to="/dit">
-                               <IoIosTrash className="mr-2" /> Delete
-                            </NavLink>
+                        <Media style={{padding: "0 0.5rem"}} onClick={() => toggle("DELETE")}>
+                            {/*<NavLink className="p-2" exact to="/dit">*/}
+                               <IoIosTrash className="mr-2" />Delete
+                            {/*</NavLink>*/}
                         </Media>
                     </PopoverBody>
                 </Popover>
             </Media>
-
+            <Modal
+                isOpen={isModalOpenRename}
+                toggle={() => toggle("RENAME")}
+                className={restProps.className + " modal-dialog-centered"}>
+                <ModalHeader toggle={() => toggle("RENAME")}>Rename a music</ModalHeader>
+                <ModalBody>
+                    <form
+                        onSubmit={(event) => handleSubmit(event, "RENAME")}
+                    >
+                        <InputGroup>
+                            <input
+                                type="text"
+                                className="form-control"
+                                name="rename_music"
+                                // onChange={this.handleChange}
+                            />
+                            <InputGroupAddon addonType="prepend"><Button type="submit" color="primary">Rename</Button></InputGroupAddon>
+                        </InputGroup>
+                    </form>
+                </ModalBody>
+            </Modal>
+            <Modal
+                isOpen={isModalOpenDelete}
+                toggle={() => toggle("DELETE")}
+                className={restProps.className + " modal-dialog-centered"}>
+                <ModalHeader toggle={() => toggle("DELETE")}>DELETE a music</ModalHeader>
+                <ModalBody>
+                    <form
+                        onSubmit={(event) => handleSubmit(event, "DELETE")}
+                    >
+                        <Media>Are you sure that you want to delete this playlist ?</Media>
+                        <Button type="button" color="cancel">Cancel</Button>
+                        <Button type="submit" color="danger">Delete</Button>
+                    </form>
+                </ModalBody>
+            </Modal>
 
             {/*<Media right className="align-self-center">
                 {right && typeof right === 'string' ? (
