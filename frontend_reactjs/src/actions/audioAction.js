@@ -68,9 +68,9 @@ export const deleteAudioDB = (_id) => {
     return (dispatch) => {
         return axios.delete(`${apiUrl}/delete/${_id}`)
             .then(response => {
-                console.log("response.data = ",response.status);
+                // console.log("response.data = ",response.status);
                 if(response.status === 200) {
-                    // dispatch(deleteAudio(_id));
+                    dispatch(fetchAllAudioDB());
                     toast.success("Audio deleted successfully");
                 }
             })

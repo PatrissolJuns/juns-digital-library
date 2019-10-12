@@ -15,7 +15,6 @@ import {
     ModalHeader, ModalBody, InputGroup, InputGroupAddon, Input, Label, FormGroup
 } from 'reactstrap';
 import bg1Image from "../assets/img/bg/background_640-1.jpg";
-import {musicItemTable} from "../demos/dashboardPage";
 import MusicItemTable from "../components/MusicItemTable";
 import { MdPersonPin } from 'react-icons/md';
 import { TiTime } from 'react-icons/ti';
@@ -25,7 +24,6 @@ const DisplayPlaylist = (props) => {
     const [isModalOpenRemove, setIsModalOpenRemove] = useState(false);
 
     const playlist = props.playlists;
-    console.log("juns = ",playlist);
     const toggle = (event, action) => {
         event.preventDefault();
         switch (action) {
@@ -43,6 +41,7 @@ const DisplayPlaylist = (props) => {
         switch (action) {
             case "ADD":
                 let dataToBeAdd = Object.values(event.target.audioSelectedAdd).filter(input => input.checked === true).map(input => input.value);
+                console.log("dataToBeAdd = ",dataToBeAdd);
                 props.actions.updatePlaylistDB(playlist._id, playlist.name, dataToBeAdd);
                 toggle(event,"ADD");
                 break;
@@ -117,9 +116,9 @@ const DisplayPlaylist = (props) => {
                                         onSubmit={(event) => handleSubmit(event, "ADD")}
                                     >
                                         {props.audios.map(audio => (
-                                            <FormGroup check>
+                                            <FormGroup key={audio._id} check>
                                                 <Label check>
-                                                    <Input value={audio._id} type="checkbox" name="audioSelectedAdd"/> {audio.track}
+                                                    <Input value={audio._id} type="checkbox" name="audioSelectedAdd"/> {audio.track + audio._id}
                                                 </Label>
                                             </FormGroup>
                                         ))}

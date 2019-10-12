@@ -12,7 +12,7 @@ const { getAudioDurationInSeconds } = require('get-audio-duration');
  * @param audio
  * @returns {Promise<Object>}
  */
-getAudioInformation = (audio) => {
+const getAudioInformation = (audio) => {
     let data = {}; let tag = null; let cover = 'default_audio.jpg'; let duration = null;
     return new Promise((resolve, reject) => {
         jsmediatags.read(audio.path, {
@@ -73,7 +73,6 @@ exports.createAudio = (req, res, next) => {
             const audio = new Audio({
                 artist: _data.artist,
                 album: _data.album,
-                belongToPlaylist: [],
                 cover: _data.cover,
                 duration: _data.duration,
                 isBookmark: false,
@@ -131,6 +130,22 @@ exports.getOneAudio = (req, res, next) => {
     );
 };
 
+exports.getFromDBOneAudio = (_id) => {
+    // console.log("inside _id = ",_id);
+    return Audio.findOne({
+        _id: _id
+    }).then(
+        (audio) => {
+            // console.log("inside audio = ",audio);
+            return audio;
+        }
+    ).catch(
+        (error) => {
+            return null;
+        }
+    );
+}
+
 exports.renameAudio = (req, res, next) => {
     Audio.findOne({
         _id: req.params.id
@@ -168,20 +183,17 @@ exports.renameAudio = (req, res, next) => {
 };
 
 exports.deleteAudio = async (req, res, next) => {
-    // let audio = {};
-    // getFromDBOneAudio(req.params.id).then((_audio => audio = _audio));
-
     let audio = await this.getFromDBOneAudio(req.params.id);
-    let audioId = audio._id;
-    let playlists = audio.belongToPlaylist;
+    console.log(" audio._id = ", audio._id);
+    let audioId = "" + audio._id;
+    let playlists = await PlaylistController.getFromDBPlaylists();
+    console.log("playlistsAll = ",playlists);
 
-    console.log("audioqsdqsdqsdqsdqs = ",audio);
     Audio.deleteOne({_id: req.params.id}).then(
         () => {
-            playlists.map(async item => {
-                let Playlist = await PlaylistController.getFromDBOnePlaylist(item);
+            playlists.map(async playlist => {
                 let response = await PlaylistController.updateFromDBOnePlaylist(
-                    Playlist._id, Playlist.name, [audioId], false
+                    playlist._id, playlist.name, [audioId], false
                 );
                 if(!response) {
                     res.status(500).json({
@@ -200,27 +212,10 @@ exports.deleteAudio = async (req, res, next) => {
             });
         }
     );
-    /*res.status(200).json({
-        message: 'Deleted!'
-    });*/
 };
 
-exports.getFromDBOneAudio = (_id) => {
-    // console.log("inside _id = ",_id);
-    return Audio.findOne({
-        _id: _id
-    }).then(
-        (audio) => {
-            // console.log("inside audio = ",audio);
-            return audio;
-        }
-    ).catch(
-        (error) => {
-            return null;
-        }
-    );
-}
 
+/*
 exports.updateFromDBBelongToPlaylist = async (_id, _newBelongToPlaylist, _isAdd) => {
     let audio = await this.getFromDBOneAudio(_id);
     let newBelongToPlaylist = [];
@@ -238,8 +233,9 @@ exports.updateFromDBBelongToPlaylist = async (_id, _newBelongToPlaylist, _isAdd)
     // update the audio
     return Audio.updateOne({_id: _id}, newAudio).then(() => {return true;}).catch(() => {return false;});
 }
+*/
 
-exports.updateAudio = (req, res, next) => {
+/*exports.updateAudio = (req, res, next) => {
     let response = this.updateFromDBOneAudio(req.params.id, req.body.name,
         req.body.belongToPlaylist, req.body.isAdd);
     if(response) {
@@ -252,9 +248,9 @@ exports.updateAudio = (req, res, next) => {
             error: 'An error occur'
         });
     }
-}
+}*/
 
-exports.updateFromDBOneAudio = async (_id, _newName, _newBelongToPlaylist, _isAdd) => {
+/*exports.updateFromDBOneAudio = async (_id, _newName, _newBelongToPlaylist, _isAdd) => {
     let audio = await this.getFromDBOneAudio(_id);
     if(audio !== null) {
         let audioId = audio._id;
@@ -306,21 +302,21 @@ const t = async () => {
 
     console.log("**************************************************************************");
     console.log("**************************************************************************");
-    /*let a1 = [1,2,3,4]; let a2 = [1,4,6,8,9];
+    /!*let a1 = [1,2,3,4]; let a2 = [1,4,6,8,9];
     let arr = [...new Set(a1.slice().concat(a2))];
     let arr1 = [...new Set([...a1, ...a2])];
-    console.log("arr =  ", arr1);*/
+    console.log("arr =  ", arr1);*!/
     let resAudio = await this.updateFromDBOneAudio("5d97eb5703ca1a32aab08786",
         "longue", ["5d9ca5a25837a208e50c63f6"], false);
     console.log("res = ",resAudio);
 
-    /*let re = await PlaylistController.updateFromDBAudioList("5d9ca5a25837a208e50c63f6",
+    /!*let re = await PlaylistController.updateFromDBAudioList("5d9ca5a25837a208e50c63f6",
         ["5d97ec2603ca1a32aab08789"], false);
-    console.log("re =  ", re);*/
+    console.log("re =  ", re);*!/
 
-    /*let re = await this.updateFromDBBelongToPlaylist("5d97ec2603ca1a32aab08789",
+    /!*let re = await this.updateFromDBBelongToPlaylist("5d97ec2603ca1a32aab08789",
         ["5d9ca5a25837a208e50c63f6"], false);
-    console.log("re =  ", re);  */
+    console.log("re =  ", re);  *!/
 
 
     let resPlaylist = await PlaylistController.updateFromDBOnePlaylist("5d9ca5a25837a208e50c63f6",
@@ -331,17 +327,17 @@ const t = async () => {
     console.log("**************************************************************************");
     console.log("belongToPlaylist aft = ", (await this.getFromDBOneAudio("5d97ec2603ca1a32aab08789")).belongToPlaylist);
     console.log("audioList aft = ", (await PlaylistController.getFromDBOnePlaylist("5d9ca5a25837a208e50c63f6")).audioList);
-    /*res.then(
+    /!*res.then(
         (data) => console.log("data = ",data)
     ).catch(
         (error) => console.log("error = ",error)
-    );*/
+    );*!/
 }
 
 // t();
 
 console.log("************************************* end action *************************************  ");
-
+*/
 
 /*
 let globalState = [
