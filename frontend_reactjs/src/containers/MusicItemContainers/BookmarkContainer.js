@@ -1,21 +1,20 @@
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import * as AudioAction from '../actions/audioAction';
-import DashboardPage from './../pages/DashboardPage';
+import * as AudioAction from "../../actions/audioAction";
+import Bookmark from "../../components/MusicItem/Bookmark";
 
 const mapStateToProps = (state) => ({
-    audios: state.audios,
-    playlists: state.playlists
+    audios: state.audios
 });
 
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(AudioAction, dispatch),
 });
 
-const DashboardPageContainer = connect(
+const BookmarkContainer = connect(
     mapStateToProps,
     mapDispatchToProps,
-)(DashboardPage);
+)(Bookmark);
 
-export default DashboardPageContainer
+export default BookmarkContainer

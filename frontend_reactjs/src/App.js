@@ -1,21 +1,21 @@
 import { STATE_LOGIN, STATE_SIGNUP } from './components/AuthForm';
-import { EmptyLayout, LayoutRoute, MainLayout } from './components/Layout';
+import {Content, EmptyLayout, LayoutRoute, MainLayout} from './components/Layout';
 import PageSpinner from './components/PageSpinner';
 import AuthPage from './pages/AuthPage';
 import React from 'react';
 import componentQueries from 'react-component-queries';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import './styles/reduction.scss';
+import {ToastContainer, toast} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 import PlaylistsContainer from "./containers/PlaylistsContainer";
 import DashboardPageContainer from "./containers/DashboardPageContainer";
 import UploadAudioContainer from "./containers/UploadAudioContainer";
-import {ToastContainer, toast} from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
-import {Col} from "reactstrap";
-import DisplayPlaylist from "./pages/DisplayPlaylist";
 import DisplayPlaylistContainer from "./containers/DisplayPlaylistContainer";
+import PlayerManagerContainer from "./containers/PlayerManagerContainer";
+import BookmarkedPageContainer from "./containers/BookmarkedPageContainer";
 
-// const AddTrackPage = React.lazy(() => import('./pages/AddTrackPage'));
 const SingleAlbumPage = React.lazy(() => import('./pages/SingleAlbumPage'));
 
 const getBasename = () => {
@@ -51,8 +51,9 @@ class App extends React.Component {
               <React.Suspense fallback={<PageSpinner />}>
                 <Route exact path="/" component={DashboardPageContainer} />
                 <Route exact path="/playlist" component={PlaylistsContainer} />
+                <Route exact path="/bookmarked-music" component={BookmarkedPageContainer} />
                 <Route exact path="/single-album" component={SingleAlbumPage} />
-                <Route exact path="/add-track" component={UploadAudioContainer} />
+                <Route exact path="/add-music" component={UploadAudioContainer} />
                 <Route exact path="/view-playlist/:id" component={DisplayPlaylistContainer} />
                 {/*<Route exact path="/view-p/" component={<DisplayPlaylistContainer _id="5d951e1bf5d45107c3be9e8d"/>} />*/}
               </React.Suspense>
@@ -60,6 +61,7 @@ class App extends React.Component {
             <Redirect to="/" />
           </Switch>
 
+        <PlayerManagerContainer />
         <ToastContainer />
 
       </BrowserRouter>

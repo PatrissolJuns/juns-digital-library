@@ -10,6 +10,6 @@ router.post('/create', audioMulter, AudioController.createAudio);
 router.put('/rename/:id', AudioController.renameAudio);
 // router.put('/update/:id', AudioController.updateAudio);
 router.delete('/delete/:id', AudioController.deleteAudio);
-
+router.put('/toggle-bookmark/:id', AudioController.toggleBookmark);
 
 module.exports = router;

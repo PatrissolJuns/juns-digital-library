@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { Link } from "react-router-dom";
 import {
     Button,
     Card,
     CardBody,
     CardImg,
-    CardText,
     CardTitle,
     InputGroup, InputGroupAddon,
     Media,
     Modal,
     ModalBody,
-    ModalHeader, Row
+    ModalHeader
 } from "reactstrap";
-import bg11Image from "../../assets/img/bg/background_1920-11.jpg";
+import defaultPlaylistImage from "../../assets/img/default_playlist.jpg";
 import { MdRemoveRedEye, MdEdit} from 'react-icons/md';
 import { IoIosTrash} from 'react-icons/io';
 
@@ -88,13 +87,13 @@ const PlaylistItem = (props) => {
                     </form>
                 </ModalBody>
             </Modal>
-            <CardImg top src={bg11Image} />
+            <CardImg top src={defaultPlaylistImage} />
             <CardBody>
                 <CardTitle>{props.playlist.name}</CardTitle>
-                <CardText className="playlist-item center-hor-ver">
+                <Media className="playlist-item center-hor-ver">
                     <h5 className="mb-0">{props.playlist.audioList.length}</h5>
                     <h6 className="mt-0">tracks</h6>
-                </CardText>
+                </Media>
                 <Media>
                     <Link to={{pathname:`/view-playlist/${props.playlist._id}`}} >
                     <Button

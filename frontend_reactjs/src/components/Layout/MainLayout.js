@@ -1,6 +1,5 @@
 import { Content, Footer, Header, Sidebar } from './../../components/Layout';
 import React from 'react';
-import PlayerManagerContainer from "../../containers/PlayerManagerContainer";
 
 class MainLayout extends React.Component {
   static isSidebarOpen() {
@@ -63,7 +62,6 @@ class MainLayout extends React.Component {
         <Content fluid onClick={this.handleContentClick}>
           <Header />
           {children}
-          <PlayerManagerContainer />
           <Footer />
         </Content>
       </main>

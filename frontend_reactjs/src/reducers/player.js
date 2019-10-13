@@ -14,7 +14,7 @@ const player = (state = initialState, action) => {
         case types.UPDATE_PLAY:
             return Object.assign({}, state,{play: action.play});
         case types.UPDATE_AUDIOLISTS:
-            return Object.assign({}, state,{currentIndex: action.currentIndex, audioLists: action.audioLists});
+            return Object.assign({}, state,{show: action.show, currentIndex: action.currentIndex, audioLists: action.audioLists});
         default:
             return state
     }

@@ -1,22 +1,14 @@
-import React, { useState } from "react";
-import { Media } from "reactstrap";
-import MusicPlayer from "./MusicPlayer";
+import React, {Fragment, useState} from "react";
 import PropTypes from "../utils/propTypes";
 
 import ReactJkMusicPlayer from "react-jinke-music-player";
 import {FaHeadphones} from 'react-icons/fa';
+import {getUrlAction} from "../utils/builtInFunction";
+
 import "react-jinke-music-player/assets/index.css";
 
 
-const getUrlAction = (oldImage, type) => {
-    if(type === "audio") return "http://localhost:5200/file/audios/" + oldImage;
-    else if (type === "image") return "http://localhost:5200/file/images/" + oldImage;
-    else return "";
-}
-
-
 const PlayerManager = ({...props}) => {
-    // const [isPlay, setIsPlay] = useState(false);
     const options = {
         //audio lists model
         // audioLists: audioLists,
@@ -247,23 +239,38 @@ const PlayerManager = ({...props}) => {
         }
     }
 
-    console.log("_audioLists = ",props);
     const audioLists = props.player.audioLists.map(audio => {
         return {
             name: audio.track,
             singer: audio.artist,
-            cover: getUrlAction(audio.cover, 'image'),
+            cover: getUrlAction (audio.cover, 'image'),
             musicSrc: getUrlAction(audio.musicSrc, 'audio'),
         }
     });
 
     return (
-        <Media>
+        <Fragment>
             { props.player.show ? <ReactJkMusicPlayer
                 defaultPlayIndex={props.player.currentIndex}
                 audioLists={audioLists} { ...options } /> : null }
-        </Media>
+        </Fragment>
     )
+}
+
+PlayerManager.propTypes = {
+    player: PropTypes.shape({
+                audioList: PropTypes.arrayOf(
+                        PropTypes.shape({
+                            name: PropTypes.string,
+                            singer: PropTypes.string,
+                            cover: PropTypes.string,
+                            musicSrc: PropTypes.string,
+                        })
+                    ),
+                currentIndex: PropTypes.number,
+                play: PropTypes.bool,
+                show: PropTypes.bool
+            })
 }
 
 /*PlayerManager.propTypes = {

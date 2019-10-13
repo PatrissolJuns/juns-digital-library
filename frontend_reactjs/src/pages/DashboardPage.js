@@ -1,21 +1,14 @@
 import Page from './../components/Page';
 import MusicItemPreview from './../components/MusicItemPreview';
-import { IconWidget } from './../components/Widget';
-
-import { productsData } from './../demos/dashboardPage';
 import React from 'react';
-import { MdFolder } from 'react-icons/md';
 import {
   Card,
   CardBody,
   CardHeader,
-  CardImg,
-  CardText,
-  CardTitle,
   Col,
   Row,
 } from 'reactstrap';
-import bg11Image from "../assets/img/bg/background_1920-11.jpg";
+import PlaylistItem from "../components/Playlist/PlaylistItem";
 
 const DashboardPage = ({...props}) => {
     return (
@@ -32,37 +25,30 @@ const DashboardPage = ({...props}) => {
                   <CardHeader>Playlist</CardHeader>
                   <CardBody>
                     <Row>
-                      <Col md="4" sm="6" xs="12" className="mb-3">
-                        <Card>
-                          <CardImg top src={bg11Image} />
-                          <CardBody>
-                            <CardTitle>Card with image</CardTitle>
-                            <CardText style={{ "fontSize": '13px' }}>
-                              Some quick example text to build on the card title and make up
-                              the bulk of the card's content.
-                            </CardText>
-                          </CardBody>
-                        </Card>
-                      </Col>
-                      <Col md="4" sm="6" xs="12" className="mb-3">
-                        <Card>
-                          <CardImg top src={bg11Image} />
-                          <CardBody>
-                            <CardTitle>Card with image</CardTitle>
-                            <CardText style={{ "fontSize": '13px' }}>
-                              Some quick example text to build on the card title and make up
-                              the bulk of the card's content.
-                            </CardText>
-                          </CardBody>
-                        </Card>
-                      </Col>
+                      {props.playlists.length > 0 ?
+                          props.playlists.map((playlist, index) => {
+                              return (
+                                  <Col key={index} md="4" sm="6" xs="12" className="mb-3">
+                                    <PlaylistItem
+                                        key={index}
+                                        playlist={playlist}
+                                        actions={props.actions}
+                                    />
+                                  </Col>
+                              )
+                            })
+                          :
+                          <p className="ml-2">No music found please add one first</p>
+                      }
                     </Row>
                   </CardBody>
                 </Card>
               </Col>
+
             </Row>
 
-            <Row>
+            {/* This feature is disable for the moment */}
+            {/*<Row>
               <Col md="12" sm="12" xs="12">
                 <Card>
                   <CardHeader>Music folder</CardHeader>
@@ -86,30 +72,35 @@ const DashboardPage = ({...props}) => {
                             subtitle="Tokoos"
                         />
                       </Col>
-                      {/*</CardGroup>*/}
+                      </CardGroup>
                     </Row>
                   </CardBody>
                 </Card>
               </Col>
-            </Row>
+            </Row>*/}
 
             <Row>
               <Col md="12" sm="12" xs="12">
                 <Card>
-                  <CardHeader>Frequent Music...</CardHeader>
+                  <CardHeader>Music</CardHeader>
                   <CardBody>
                     <Row>
                       <Col md="12" sm="12" xs="12" className="mb-3">
-                        {props.audios.map(
-                            (audio) => (
-                                  <MusicItemPreview
-                                      key={audio._id}
-                                      audio={audio}
-                                      audios={props.audios}
-                                      actions={props.actions}
-                                  />
-                            ),
-                        )}
+                        {props.audios.length > 0 ?
+                            props.audios.map(
+                                (audio) => (
+                                    <MusicItemPreview
+                                        key={audio._id}
+                                        audio={audio}
+                                        audios={props.audios}
+                                        actions={props.actions}
+                                    />
+                                ),
+                            )
+                            :
+                            <p>No music found please add one first</p>
+                        }
+
                       </Col>
                     </Row>
                   </CardBody>

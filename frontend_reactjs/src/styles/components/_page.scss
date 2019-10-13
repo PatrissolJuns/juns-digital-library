@@ -137,3 +137,14 @@
 .playlist-item h5 {
   font-weight: bold;
 }
+
+.bookmarked {
+  color: #fff !important;
+  background-color: #6a82fb !important;
+  border-color: #6a82fb !important;
+}
+.bookmarked:hover{
+  color: #6a82fb !important;
+  background-color: #fff !important;
+  border-color: #6a82fb !important;
+}

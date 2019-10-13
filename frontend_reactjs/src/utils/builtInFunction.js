@@ -4,7 +4,22 @@ export const getUrlAction = (oldImage, type) => {
     else return "";
 }
 
+export const getDurationFormat = second  => {
+    let i = 0;
+    let h = 0;
+    let s = parseInt(second);
 
-export const getDurationFormat = (duration) => {
-    return parseInt(duration / 60, 10) + ":" + parseInt(duration % 60);
+    if (s > 60) {
+        i = parseInt(s / 60);
+        s = parseInt(s % 60);
+
+        if (i > 60) {
+            h = parseInt(i / 60);
+            i = parseInt(i % 60);
+        }
+    }
+    let zero = v => v >> 0 < 10 ? "0".concat(v) : v;
+
+    if (h > 0) return [zero(h), zero(i), zero(s)].join(":");
+    else return [zero(i), zero(s)].join(":");
 }

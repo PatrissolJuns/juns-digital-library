@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import * as PlaylistActions from '../actions/playlistAction';
 import DisplayPlaylist from './../pages/DisplayPlaylist';
 import getOnePlaylist from './../selectors/playlist';
+import { updateGenAudioLists } from "../actions/playerAction";
 
 const mapStateToProps = (state, props) => ({
     audios: state.audios,
@@ -11,7 +12,7 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators(PlaylistActions, dispatch),
+    actions: bindActionCreators({...PlaylistActions, updateGenAudioLists}, dispatch),
 });
 
 const DisplayPlaylistContainer = connect(

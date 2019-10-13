@@ -84,7 +84,7 @@ exports.createAudio = (req, res, next) => {
             audio.save().then(
                 (audio) => {
                     console.log("inside node");
-                    res.status(201).json({
+                    res.status(200).json({
                         message: "audio successfully saved!"
                     });
                 }
@@ -161,7 +161,7 @@ exports.renameAudio = (req, res, next) => {
 
             Audio.updateOne({_id: req.params.id}, t).then(
                 () => {
-                    res.status(201).json({
+                    res.status(200).json({
                         message: 'audio updated successfully!'
                     });
                 }
@@ -214,6 +214,36 @@ exports.deleteAudio = async (req, res, next) => {
     );
 };
 
+exports.toggleBookmark = (req, res, next) => {
+    Audio.findOne({
+        _id: req.params.id
+    }).then(
+        (_audio) => {
+            let t = JSON.parse(JSON.stringify(_audio));
+            t.isBookmark = !t.isBookmark;
+
+            Audio.updateOne({_id: req.params.id}, t).then(
+                () => {
+                    res.status(200).json({
+                        message: 'audio updated successfully!'
+                    });
+                }
+            ).catch(
+                (error) => {
+                    res.status(400).json({
+                        error: error
+                    });
+                }
+            );
+        }
+    ).catch(
+        (error) => {
+            res.status(404).json({
+                error: error
+            });
+        }
+    );
+};
 
 /*
 exports.updateFromDBBelongToPlaylist = async (_id, _newBelongToPlaylist, _isAdd) => {
@@ -239,7 +269,7 @@ exports.updateFromDBBelongToPlaylist = async (_id, _newBelongToPlaylist, _isAdd)
     let response = this.updateFromDBOneAudio(req.params.id, req.body.name,
         req.body.belongToPlaylist, req.body.isAdd);
     if(response) {
-        res.status(201).json({
+        res.status(200).json({
             message: 'audio updated successfully!'
         });
     }
@@ -455,7 +485,7 @@ exports.createThing = (req, res, next) => {
     });
     thing.save().then(
         () => {
-            res.status(201).json({
+            res.status(200).json({
                 message: 'Post saved successfully!'
             });
         }
@@ -495,7 +525,7 @@ exports.modifyThing = (req, res, next) => {
     });
     Thing.updateOne({_id: req.params.id}, thing).then(
         () => {
-            res.status(201).json({
+            res.status(200).json({
                 message: 'Thing updated successfully!'
             });
         }
