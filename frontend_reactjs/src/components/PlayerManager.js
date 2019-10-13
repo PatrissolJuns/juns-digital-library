@@ -3,13 +3,12 @@ import PropTypes from "../utils/propTypes";
 
 import ReactJkMusicPlayer from "react-jinke-music-player";
 import {FaHeadphones} from 'react-icons/fa';
-import "react-jinke-music-player/assets/index.css";
 import {getUrlAction} from "../utils/builtInFunction";
 
+import "react-jinke-music-player/assets/index.css";
 
 
 const PlayerManager = ({...props}) => {
-    // const [isPlay, setIsPlay] = useState(false);
     const options = {
         //audio lists model
         // audioLists: audioLists,
@@ -240,7 +239,6 @@ const PlayerManager = ({...props}) => {
         }
     }
 
-    console.log("_audioLists = ",props);
     const audioLists = props.player.audioLists.map(audio => {
         return {
             name: audio.track,
@@ -257,6 +255,22 @@ const PlayerManager = ({...props}) => {
                 audioLists={audioLists} { ...options } /> : null }
         </Fragment>
     )
+}
+
+PlayerManager.propTypes = {
+    player: PropTypes.shape({
+                audioList: PropTypes.arrayOf(
+                        PropTypes.shape({
+                            name: PropTypes.string,
+                            singer: PropTypes.string,
+                            cover: PropTypes.string,
+                            musicSrc: PropTypes.string,
+                        })
+                    ),
+                currentIndex: PropTypes.number,
+                play: PropTypes.bool,
+                show: PropTypes.bool
+            })
 }
 
 /*PlayerManager.propTypes = {

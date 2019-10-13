@@ -30,11 +30,6 @@ const sidebarBackground = {
   backgroundRepeat: 'no-repeat',
 };
 
-const navComponents = [
-  { to: '/add-track', name: 'add track', exact: false, Icon: MdRadioButtonChecked },
-  { to: '/edit-track', name: 'edit track', exact: false, Icon: MdRadioButtonChecked }
-];
-
 const pageContents = [
   { to: '/login', name: 'login / signup', exact: false, Icon: MdAccountCircle },
   {
@@ -48,8 +43,8 @@ const pageContents = [
 const navItems = [
   { to: '/', name: 'home', exact: true, Icon: MdDashboard },
   { to: '/playlist', name: 'playlist', exact: false, Icon: MdWeb },
-  { to: '/bookmarked-music', name: 'My favorites', exact: false, Icon: MdWeb },
-  { to: '/single-album', name: 'single album', exact: false, Icon: MdWeb },
+  { to: '/bookmarked-music', name: 'favourites', exact: false, Icon: MdWeb },
+  { to: '/add-music', name: 'add music', exact: false, Icon: MdWeb },
 ];
 
 const bem = bn.create('sidebar');
@@ -107,7 +102,7 @@ class Sidebar extends React.Component {
               </NavItem>
             ))}
 
-            <NavItem
+            {/*<NavItem
               className={bem.e('nav-item')}
               onClick={this.handleClick('Components')}
             >
@@ -145,9 +140,9 @@ class Sidebar extends React.Component {
                   </BSNavLink>
                 </NavItem>
               ))}
-            </Collapse>
+            </Collapse>*/}
 
-            <NavItem
+            {/*<NavItem
               className={bem.e('nav-item')}
               onClick={this.handleClick('Pages')}
             >
@@ -185,7 +180,7 @@ class Sidebar extends React.Component {
                   </BSNavLink>
                 </NavItem>
               ))}
-            </Collapse>
+            </Collapse>*/}
           </Nav>
         </div>
       </aside>
