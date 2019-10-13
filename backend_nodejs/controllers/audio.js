@@ -1,11 +1,27 @@
 // in controllers/audio.js
-const jsmediatags  = require("jsmediatags");
+const mm = require('music-metadata');
 const Audio = require('../models/Audio');
 const PlaylistController = require('../controllers/playlist');
-const btoa = require('btoa');
 const fs = require('fs');
-const { getAudioDurationInSeconds } = require('get-audio-duration');
 
+function saveImage(image) {
+    return new Promise((resolve, reject) => {
+
+        const extension = image.format === 'image/png' ? 'png' : 'jpg'; // Most of the time the cover art is JPEG
+
+        const cover = Date.now() + '.' + extension;
+
+        fs.writeFile("Storage/images/" + cover, image.data, {encoding: 'base64'}, err => {
+            // check if there is an error
+            if (err) {
+                reject(err);
+            } else {
+                console.log("The file was saved!");
+                resolve(cover);
+            }
+        });
+    })
+}
 
 /**
  * This function get the various property of an audio
@@ -13,55 +29,26 @@ const { getAudioDurationInSeconds } = require('get-audio-duration');
  * @returns {Promise<Object>}
  */
 const getAudioInformation = (audio) => {
-    let data = {}; let tag = null; let cover = 'default_audio.jpg'; let duration = null;
-    return new Promise((resolve, reject) => {
-        jsmediatags.read(audio.path, {
-            onSuccess: function(_tag) {
-                // console.log(tag);
-                tag = _tag;
-                if(_tag.tags.hasOwnProperty('title')) {
-                    if(_tag.tags.hasOwnProperty('picture') && _tag.tags.picture.hasOwnProperty('data')) {
-                        let image = _tag.tags.picture; let base64String = "";
-                        for (let i = 0; i < image.data.length; i++) {
-                            base64String += String.fromCharCode(image.data[i]);
-                        }
-                        /* old system
-                        let base64String = "";
-                        var base64 = "data:" + image.format + ";base64," +  btoa(base64String); */
+    let cover = 'default_audio.jpg';
+    return mm.parseFile(audio.path, {duration: true}).then(async metadata => {
 
-                        cover = Date.now() + ".png";
+        if (metadata.common.picture && metadata.common.picture.length > 0) {
 
-                        // transform the base64 into an image file and save it
-                        fs.writeFile("Storage/images/" + cover, btoa(base64String), {encoding: 'base64'}, function(err) {
-                            // check if there is an error
-                            if(err) {
-                                return console.log(err);
-                            }
-                            console.log("The file was saved!");
-                        });
-                    }
-                }
+            // Make sure the image is written
+            cover = await saveImage(metadata.common.picture[0]);
 
-                getAudioDurationInSeconds(audio.path).then((_duration) => {
-                    // console.log("duration = ", duration)
-                    // console.log("duration = ", parseInt(duration / 60, 10) + ":" + parseInt(duration % 60))
-                    data = {
-                        artist: tag.tags.artist === undefined ? "unknown" : tag.tags.artist,
-                        album: tag.tags.album === undefined ? "unknown" : tag.tags.album,
-                        cover: cover,
-                        duration: _duration,
-                        track: audio.originalname,
-                        // track: tag.tags.track === undefined ? "unknown" : tag.tags.track,
-                        year: tag.tags.year === undefined ? "unknown" : tag.tags.year,
-                    };
-                    resolve(data);
-                });
-            },
-            onError: function(error) {
-                console.log(':(', error.type, error.info);
-                reject();
-            }
-        });
+            // Alternatively, you could encode the image to an URL:
+            // const imgSrcUrl = `data:${image.format};base64,${image.data.toString('base64')}`;
+        }
+
+        return {
+            artist: metadata.common.artist ? metadata.common.artist : 'unknown',
+            album: metadata.common.album ? metadata.common.album : 'unknown',
+            cover: cover,
+            duration: metadata.format.duration,
+            track: audio.title,
+            year: metadata.common.year ? metadata.common.year : 'unknown'
+        };
     });
 };
 
@@ -485,7 +472,7 @@ exports.createThing = (req, res, next) => {
     });
     thing.save().then(
         () => {
-            res.status(200).json({
+            res.status(201).json({
                 message: 'Post saved successfully!'
             });
         }
