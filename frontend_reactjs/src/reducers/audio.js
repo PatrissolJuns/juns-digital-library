@@ -29,6 +29,13 @@ const audio = (state = [], action) => {
             return state.filter(_audio => action._id !== _audio._id);
         case types.FETCH_AUDIO:
             return action.audios;
+        case types.TOGGLE_BOOKMARK_AUDIO:
+            return state.map((_audio) => {
+                if (_audio._id === action._id) {
+                    return Object.assign({}, _audio,{isBookmark: !_audio.isBookmark})
+                }
+                else return _audio;
+            });
         default:
             return state
     }

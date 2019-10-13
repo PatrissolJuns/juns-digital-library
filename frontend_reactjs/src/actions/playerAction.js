@@ -10,8 +10,21 @@ export const updatePlay = (play) => ({
     play
 });
 
-export const updateAudioLists = (currentIndex, audioLists) => ({
+export const updateAudioLists = (currentIndex, audioLists, show = false) => ({
     type: types.UPDATE_AUDIOLISTS,
+    show,
     currentIndex,
     audioLists
 });
+
+export const updateGenAudioLists = (currentIndex, audioLists) => {
+    return (dispatch) => {
+        // first update the currentIndex by dispatching the updateAudioLists function
+        dispatch(updateAudioLists(currentIndex, audioLists));
+
+        // show the player updated
+        setTimeout( function() {
+            dispatch(updateShow(true));
+        }, 10);
+    };
+};

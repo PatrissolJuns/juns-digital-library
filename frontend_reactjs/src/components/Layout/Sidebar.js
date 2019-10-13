@@ -48,7 +48,7 @@ const pageContents = [
 const navItems = [
   { to: '/', name: 'home', exact: true, Icon: MdDashboard },
   { to: '/playlist', name: 'playlist', exact: false, Icon: MdWeb },
-  { to: '/view-p', name: 'albums', exact: false, Icon: MdWeb },
+  { to: '/bookmarked-music', name: 'My favorites', exact: false, Icon: MdWeb },
   { to: '/single-album', name: 'single album', exact: false, Icon: MdWeb },
 ];
 

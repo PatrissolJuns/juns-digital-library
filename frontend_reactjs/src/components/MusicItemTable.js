@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from './../utils/propTypes';
 
-import {Table, Button} from 'reactstrap';
+import {Table} from 'reactstrap';
 
 import Avatar from './../components/Avatar';
 
-import { IoMdHeart } from 'react-icons/io';
-import PlayButtonContainer from "../containers/PlayButtonContainer";
+import PlayButtonContainer from "../containers/MusicItemContainers/PlayButtonContainer";
+import ThreeDotsContainer from "../containers/MusicItemContainers/ThreeDotsContainer";
+import BookmarkContainer from "../containers/MusicItemContainers/BookmarkContainer";
 import {getUrlAction, getDurationFormat} from './../utils/builtInFunction';
 
 const MusicItemTable = ({ headers, musicData, ...restProps }) => {
@@ -30,12 +31,9 @@ const MusicItemTable = ({ headers, musicData, ...restProps }) => {
             <td className="align-middle">{audio.album}</td>
             <td className="align-middle">{getDurationFormat(audio.duration)}</td>
               <td className="align-middle center-hor-ver">
-                  <PlayButtonContainer audio={audio} audioLists={musicData} />
-                  <Button outline color="primary"
-                       style={{ width:"35px", height:"35px", flexDirection: "column" }}
-                       className="rounded-circle center-hor-ver">
-                    <IoMdHeart size={20} />
-                </Button>
+                  <PlayButtonContainer audio={audio} audioList={musicData} />
+                  <BookmarkContainer audio={audio} />
+                  <ThreeDotsContainer audio={audio} />
             </td>
           </tr>
         ))}

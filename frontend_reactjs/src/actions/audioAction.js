@@ -70,12 +70,29 @@ export const deleteAudioDB = (_id) => {
             .then(response => {
                 // console.log("response.data = ",response.status);
                 if(response.status === 200) {
-                    dispatch(fetchAllAudioDB());
+                    dispatch(deleteAudio(_id));
                     toast.success("Audio deleted successfully");
                 }
             })
             .catch(error => {
                 toast.error("Error while trying to delete a audio");
+                throw(error);
+            });
+    };
+};
+
+export const toggleBookmarkAudioDB = (_id) => {
+    return (dispatch) => {
+        return axios.put(`${apiUrl}/toggle-bookmark/${_id}`)
+            .then(response => {
+                console.log("toggleBookmarkAudio = ",response);
+                if(response.status === 200) {
+                    dispatch(toggleBookmarkAudio(_id));
+                    toast.success("Audio bookmarked successfully");
+                }
+            })
+            .catch(error => {
+                toast.error("Error while trying to bookmark the audio");
                 throw(error);
             });
     };
@@ -101,4 +118,9 @@ const deleteAudio = (_id) => ({
 const fetchAudio = (audios) => ({
     type: types.FETCH_AUDIO,
     audios
+});
+
+const toggleBookmarkAudio = (_id) => ({
+    type: types.TOGGLE_BOOKMARK_AUDIO,
+    _id: _id
 });
